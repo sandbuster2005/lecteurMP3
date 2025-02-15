@@ -1,4 +1,4 @@
-# lecteurMP3
+# ChimkenMuziks
 A handmade MP3 player
 
 this is a cli player which plan to be easily usable , highly configurable
