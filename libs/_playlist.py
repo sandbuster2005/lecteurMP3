@@ -1,10 +1,10 @@
 #made by sand
 from .ffiles import *
 from .utils import *
-
+from os import listdir
 def init_playlist(self):
     self.playlist=None# playlist selectionné , None = toute les chansons
-    
+    self.playlists="appdata/playlist/"# dossier de sauvegarde des playlist
 def create_playlist(self):
     """
     cette fonction permet a l'utilisateur de creer une nouvelle playlist vide
@@ -15,7 +15,7 @@ def create_playlist(self):
     """
     file=input("playlist name :")
     if file!="":
-        write_file("appdata/playlist/"+str(file))
+        write_file(self.playlists+str(file))
 
 
 def load_playlist(self,playlist=""):
@@ -52,18 +52,18 @@ def select_playlist(self):
     la fonction demande une valeur numérique a l'utilisateur pour selectionner une playlist
     """
     playlist=None
-    if listdir(".appdata/playlist/")!=[]:#une playlist existe
+    if listdir(self.playlists)!=[]:#une playlist existe
         i=0
-        for x in listdir("appdata/playlist/"):
+        for x in listdir(self.playlists):
             print(i,x);i+=1
             
         word=input("select playlist :")
-        if all_numbers(word,len(listdir("appdata/playlist/")),1):
-            playlist=listdir("appdata/playlist/")[int(word)]
+        if all_numbers(word,len(listdir(self.playlists)),1):
+            playlist=listdir(self.playlists)[int(word)]
             
     else:#sinon crrer une playlist
         create_playlist(self)
-        playlist=listdir("appdata/playlist/")[0]
+        playlist=listdir(self.playlists)[0]
         
     return playlist
 
@@ -75,7 +75,7 @@ def get_psongs(self,playlist):
     limite:
     la playlist doit se trouver dans le dossier playlist 
     """
-    with open("appdata/playlist/"+str(playlist),"r") as f:
+    with open(self.playlists+str(playlist),"r") as f:
         return f.read()
     
     
@@ -95,7 +95,7 @@ def edit_psong(self,playlist,dirs=None,song=None):
         files=[self.files[int(song)]]
         
     song+="".join([x+"|||" for x in files if x not in songs])# ne pas mettre 2 fois le meme 
-    with open("appdata/playlist/"+str(playlist),"w") as f:
+    with open(self.playlists+str(playlist),"w") as f:
         f.write(songs)
 
 

@@ -24,9 +24,9 @@ def sort_command(self):
             
         x+=1
         
-    print(missing)
+    #print(missing)
     command=[command[x]*(1-((len(command[x-1])>1)==(len(command[x])==1)==(len(command[x+1])==1)==True))+"h"*((len(command[x-1])>1)==(len(command[x])==1)==(len(command[x+1])==1)==True) for x in range(len(command))]
-    print(command)
+    #print(command)
     if "h" in command:
         command=command[:command.index("h")+1]+[missing]+command[command.index("h")+1:]
         
@@ -36,10 +36,10 @@ def sort_command(self):
     elif len(command[0])>1:
         command+=["h"]
         
-    print(command)
+    #print(command)
     command=[self.holders.index(command[x]) for x in range(len(command))]
     self.command=command
-    print(self.command)
+    #print(self.command)
 
 
 def edit_command(self):
