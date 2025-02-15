@@ -114,7 +114,7 @@ def mani_file(self):
             self.files=self.load_playlist(self.playlist)
 #wip            
 def get_favorite(self):
-    self.favorite=get_data(get_file(".appdata/favorite.txt"),"|||")
+    self.favorite=get_data(get_file("appdata/favorite.txt"),"|||")
     
 def show_favorite(self):
     for x in range(len(self.favorite)):
@@ -131,4 +131,4 @@ def add_favorite(self):
     
 def write_favorite(self):
     a=join_list(self.favorite,"|||")
-    write_file(a,".appdata/favorite.txt")
+    write_file(a,"appdata/favorite.txt")

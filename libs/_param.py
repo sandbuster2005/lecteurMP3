@@ -2,7 +2,7 @@
 from .ffiles import *
 
 def init_param(self):
-    self.param=".appdata/param.txt"#fichier de sauvegarde des paramétre
+    self.param="appdata/param.txt"#fichier de sauvegarde des paramétre
     
 def get_param(self):
     """
