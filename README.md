@@ -22,4 +22,4 @@ function currenctly include :
 planned:
 	-NA
 	
-there are still bug every now and then but hey it work 
+there are still bug every now and then but heyt work 
