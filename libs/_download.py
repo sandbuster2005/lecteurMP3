@@ -25,7 +25,8 @@ def yt_search(self):
         title=replace(results[int(word)].get("title"),["(","'",'"',")"," ",":","|","&"])#formatage pour eviter les crash
         link="https://www.youtube.com"+results[int(word)].get("url_suffix")
         print(link)
-        self.external_call([f"yt-dlp -x --audio-format mp3 -o /mnt/sda1/shared/Musique/musique/download/{title} {link} "], shell=True)# telechargement en externe en .mp3
+        self.external_call(["ls"],shell=True)
+        self.external_call([f"./yt-dlp -x --audio-format mp3 -o {self.path_to_file}download/{title} {link} "], shell=True)# telechargement en externe en .mp3
 
 
 def dl_yt_playlist(self):
@@ -36,7 +37,7 @@ def dl_yt_playlist(self):
     lenght=input("lenght of playlist:")#wip
     if all_numbers(lenght):#wip
         lenght=int(lenght)#wip
-        for f in listdir("/mnt/sda1/shared/Musique/musique/download"):#wip
+        for f in listdir("{self.path_to_file}/download"):#wip
             lenght+=1#wip
             
-        self.external_call([f"yt-dlp -x --audio-format mp3 -P /mnt/sda1/shared/Musique/musique/download/ {playlist} "], shell=True) # telechargement chanson / playlist en .mp3
+        self.external_call([f"./yt-dlp -x --audio-format mp3 -P /{self.path_to_file}download/ {playlist} "], shell=True) # telechargement chanson / playlist en .mp3

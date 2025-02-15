@@ -1,4 +1,4 @@
-import requests
+import libs.requests as requests
 import urllib.parse
 import json
 

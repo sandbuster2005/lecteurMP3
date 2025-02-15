@@ -5,7 +5,7 @@ from math import floor,ceil
 import libs.vlc as vlc
 import threading
 from .utils import *
-import alsaaudio
+import libs.alsaaudio as alsaaudio
 def init_main(self):
     self.master=alsaaudio.Mixer()
     self.repeat=0#1 pour repeter en boucle la chanson
