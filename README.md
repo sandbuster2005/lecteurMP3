@@ -24,4 +24,4 @@ planned:
 	
 there are still bug every now and then but hey it work 
 
-(exemple.png)
+![exemple display during a song](/exemple.png)
