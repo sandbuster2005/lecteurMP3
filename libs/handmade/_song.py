@@ -1,6 +1,6 @@
 #made by sand
 from random import randint
-
+from .utils import all_numbers
 def init_song(self):
     #SONG variables
     self.song=None# son aactuelle
@@ -42,7 +42,7 @@ def add_song(self):
         word="1"
         while all_numbers(word):
             word=input("select :")#choisir playlist 
-            if allnumbers(word,len(self.dirs)):
+            if all_numbers(word,len(self.dirs)):
                 if int(word)==len(self.dirs):#ajouter par chason
                     while all_numbers(word):
                         word=input("enter song number:")

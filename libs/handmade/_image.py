@@ -6,9 +6,9 @@ from random import randint
 from .utils import *
 
 def init_image(self):
-    if self.sys_architecture=="x86_64":
+    if "64" in self.sys_architecture:
         self.img_command="./libs/x86/jp2a_x86 --fill --color-depth=8"
-    else:
+    elif "arm" in self.sys_architecture:
         self.img_command="./libs/arm/jp2a_arm --fill --color-depth=8"
     self.path_to_img="appdata/image/"# chemin du dosier image
     self.imgs=[]# liste des images contenu dans le chemin indiqué ,vide = random

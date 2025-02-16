@@ -73,7 +73,7 @@ elif sys.version_info >= (3, 7):
             # We also have to hold onto the actual context manager, because
             # it will do the cleanup whenever it gets garbage collected, so
             # we will also store that at the global level as well.
-            _CACERT_CTX = get_path("certifi", "cacert.pem")
+            _CACERT_CTX = get_path("libs.certifi", "cacert.pem")
             _CACERT_PATH = str(_CACERT_CTX.__enter__())
             atexit.register(exit_cacert_ctx)
 

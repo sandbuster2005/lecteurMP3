@@ -28,7 +28,7 @@ def f_f(self):
     self.suspend("load_songs")
 
 def g_f(self):
-    self.suspend("show_psong")
+    pass
 
 def i_f(self):
     self.suspend("historic")

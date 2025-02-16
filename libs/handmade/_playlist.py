@@ -2,6 +2,7 @@
 from .ffiles import *
 from .utils import *
 from os import listdir
+from os.path import isfile
 def init_playlist(self):
     self.playlist=None# playlist selectionné , None = toute les chansons
     self.playlists="appdata/playlist/"# dossier de sauvegarde des playlist
@@ -29,17 +30,18 @@ def load_playlist(self,playlist=""):
     if playlist=="":# pas de playlist selectionné -> ecran de selection 
         playlist=self.select_playlist()
         
-    if playlist==None: # playlist par defaut(toute les chanson) charger tout les repertoire
+    if playlist==None or not isfile(playlist): # playlist par defaut(toute les chanson) charger tout les repertoire
         self.playlist=None
         files=self.get_file(self.path_to_file,[])
         
     else:#playlist selectionné
-        song=self.get_psongs(playlist)#recuperer les chason du fichier
+        song=self.get_psongs(playlist)#recuperer les chanson du fichier
         self.playlist=playlist
         if song!="":
             song=song.split("|||")
             files=[song[x] for x in range(len(song)-1)]
-            
+        else:
+            files=""
     return files
         
         
@@ -63,7 +65,8 @@ def select_playlist(self):
             
     else:#sinon crrer une playlist
         create_playlist(self)
-        playlist=listdir(self.playlists)[0]
+        if listdir(self.playlists)!=[]:
+            playlist=listdir(self.playlists)[0]
         
     return playlist
 
@@ -90,26 +93,15 @@ def edit_psong(self,playlist,dirs=None,song=None):
     songs=self.get_psongs(playlist)
     if dirs!=None:# par chason individuelle
         files=self.get_file(self.dirs[int(dirs)][0])
-        
+        print(files)
     if song!=None:# par repertoire
         files=[self.files[int(song)]]
         
-    song+="".join([x+"|||" for x in files if x not in songs])# ne pas mettre 2 fois le meme 
+    if song==None:
+        song=""
+        
+    songs+="".join([x+"|||" for x in files if x not in songs])# ne pas mettre 2 fois le meme 
+    print(songs)
+    print(self.playlists+str(playlist))
     with open(self.playlists+str(playlist),"w") as f:
         f.write(songs)
-
-
-def show_psong(self):
-    """
-    cette fonction affiche la liste de chanson d'une playlist
-    
-    limite:
-    cette fonction demande a l utilisateur de rentrer
-    aucune valeur pour retourner au menu et
-    une valeur numérique pour selectionner la playlist 
-    """
-    songs=self.load_playlist()
-    for x in range(len(songs)):
-        print(x,songs[x].rsplit("/",1)[-1])
-        
-    input("press enter to continue")

@@ -41,7 +41,7 @@ def init_main(self):
             "o":"pour jouer en boucle",
             "k":"pour créer une playlist",
             "e":"pour ajouter des chansons a une playlist",
-            "g":"pour afficher les chansons d'une playlist",
+            "g":"undef",
             "f":"pour charger une playlist",
             "fv":"pour rajouter/supprimer des favoris",#wip
             "j":"pour selectionner une image dans la galerie",
@@ -63,6 +63,12 @@ def main(self):
     self.get_img(self.path_to_img,start=1)#init
     self.check_adress()
     self.files=self.load_playlist(self.playlist)#init
+    if len(self.files)==0:
+        if self.playlist!=None:
+            self.playlist=None
+            self.check_adress()
+            self.files=self.load_playlist(self.playlist)
+            
     while len(self.files)==0:
         print("no song in folder")
         self.change_main_path()
@@ -87,21 +93,21 @@ def update(self):
     cette fonction afiche la bar de progression et la mettre a jour ainsi que
     passer a la chason suivant a la fin de l'actuel 
     """
-    time0=self.player.get_time()/1000#temps initial 
+    time0=self.player.get_time()#temps initial 
     while self.stay:
         if not self.MainThread.is_alive():
             self.stay=False
             self.player.stop()#end
             self.write_param()#sauvegarde es parametre
-        time0=self.player.get_time()/1000# temps actuel
+        time0=self.player.get_time()# temps actuel
         sleep(0.5)
+        time=self.player.get_time()#temps actuel
         if self.bar==None and self.song!=None:#chanson demarré 
             Max=self.player.get_length()
             self.bar=Bar("time(s)",max=floor(Max/1000),fill="■")
             
         if self.bar!=None and not self.search and not self.pause:#chason en cours et pas de pause/suspension     
-            time=self.player.get_time()/1000#temps actuel
-            if time>self.bar.max:#idk really
+            if time/1000>self.bar.max:#idk really
                 continue
             
             if self.bar.index<0:##en cas de reculer en desosus du debut
@@ -110,16 +116,21 @@ def update(self):
             if time<0:#en cas de reculer en desosus du debut
                 time=0
                 
-            if time>self.bar.index:#la chanson a avancer
-                self.bar.index=floor(time)
+            if time/1000>self.bar.index:#la chanson a avancer
+                self.bar.index=floor(time/1000)
                 self.bar.update()
-
-            if ceil(time)>=self.bar.max or time==time0:#la chanson est fini
+            
+            if ceil(time/1000)>=self.bar.max : #la chanson est fini
                 if self.bar.index>1:# la chason est bien fini et ne vien pas de commencer
-                    if not self.repeat:self.choose_song()
+                    if not self.repeat:
+                        self.choose_song()
                     self.play()
-
-
+                    
+        if time==time0 and self.song!=None and not self.search and not self.pause:
+            if not self.repeat:
+                self.choose_song()
+            self.play()
+            
 def get_input(self):
     """
     cette fonction est le menu principal qui permet a l'utilisateur d'interagir avec le programme
