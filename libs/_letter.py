@@ -13,7 +13,7 @@ def suspend(self,fonction):
 
 #les fonctions sont relié a self.commands
 def q_f(self):
-    self.leave=False
+    self.stay=False
 
 def r_f(self):
     self.select()
