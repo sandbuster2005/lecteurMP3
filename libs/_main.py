@@ -9,13 +9,14 @@ import libs.alsaaudio as alsaaudio
 def init_main(self):
     self.master=alsaaudio.Mixer()
     self.repeat=0#1 pour repeter en boucle la chanson
-    self.leave=True# False pour quiter le lecteur
+    self.stay=True# False pour quiter le lecteur
     self.pause=0# pour mettre en pause le lecteur+la barre
     self.bar=None# la barre de progression du temps de la chanson 
     self.search=False# True pour cacher l'affichage
     self.player=vlc.MediaPlayer()# lecteur
     self.played=[]# historique
     self.sound=vol=int(self.master.getvolume()[0])
+    self.MainThread=threading.currentThread()
     self.tooltips={
             "h":"pour afficher le menu help",
             "q":"pour quitter le lecteur",
@@ -58,17 +59,21 @@ def main(self):
     self.get_img(self.path_to_img,start=1)#init
     self.check_adress()
     self.files=self.load_playlist(self.playlist)#init
-    if len(self.files)==0:
+    while len(self.files)==0:
         print("no song in folder")
-        print(self.tooltips["y"])
+        self.change_main_path()
+        self.files=self.load_playlist(self.playlist)
     if self.battery_exist:
         self.get_battery_life()#init
         
     progress = threading.Thread(target=self.update)#init
     progress.start()#init
-    while self.leave!=False:
-        self.get_input()#interface
+    print(f"volume: {self.sound}")
+    while self.stay!=False:
         
+        self.get_input()#interface
+        if not progress.is_alive():
+            self.stay==False
     self.player.stop()#end
     self.write_param()#sauvegarde es parametre
     
@@ -79,7 +84,11 @@ def update(self):
     passer a la chason suivant a la fin de l'actuel 
     """
     time0=self.player.get_time()/1000#temps initial 
-    while self.leave:
+    while self.stay:
+        if not self.MainThread.is_alive():
+            self.stay=False
+            self.player.stop()#end
+            self.write_param()#sauvegarde es parametre
         time0=self.player.get_time()/1000# temps actuel
         sleep(0.5)
         if self.bar==None and self.song!=None:#chanson demarré 
@@ -158,7 +167,8 @@ def display(self):
         else:
             print(f"{time[0]}:{time[1]}   volume: {self.sound}% ")# heure,volume
         print(f"Playlist: {self.playlist}   Song: {self.files.index(self.song)}:{self.song.rsplit(a,1)[1]}")# playlist,index,chanson
-    
+    else:
+        print(f"volume :{self.sound}")
     
 def help_menu(self):
     print("entrer un nombre pour lancer la chanson correspondante")
@@ -256,13 +266,13 @@ def wind(self,mode):
         self.player.set_time(int(self.player.get_time()-10000));self.bar.index=max(0,self.bar.index-10)
     
     if mode==3:
-        self.sound+=10
+        self.sound+=5
         self.sound=min(100,self.sound)
         self.sound=max(0,self.sound)
         self.master.setvolume(self.sound)
         
     if mode==4:
-        self.sound-=10
+        self.sound-=5
         self.sound=min(100,self.sound)
         self.sound=max(0,self.sound)
         self.master.setvolume(self.sound)

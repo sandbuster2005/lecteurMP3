@@ -59,18 +59,19 @@ def select_img(self):
     while all_numbers(word,len(self.imgs)):
         for x in range(len(self.imgs)):
             print(x,self.imgs[x])
-    
+            
         print(len(self.imgs),"random")# index max +1
         word=input("select img:")
-        if int(word)==len(self.imgs):
-            self.img=""# aleatoire
-            word=""
-            
-        else:
-            self.external_call([f"./libs/jp2a --fill --color-depth=8 {self.imgs[int(word)]}"],True)
-            confirm=input("y/n ?")
-            if confirm.lower()=="y":
-                self.img=self.imgs[int(word)] # selection
+        if all_numbers(word,len(self.imgs)):
+            if int(word)==len(self.imgs):
+                self.img=""# aleatoire
                 word=""
+            
+            else:
+                self.external_call([f"./libs/jp2a --fill --color-depth=8 {self.imgs[int(word)]}"],True)
+                confirm=input("y/n ?")
+                if confirm.lower()=="y":
+                    self.img=self.imgs[int(word)] # selection
+                    word=""
             
         self.display()

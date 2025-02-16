@@ -67,6 +67,7 @@ def play_song(self):
     """
     cette fonction lance le choix de chanson et la joue
     """
-    self.choose_song()
-    self.play()
-    self.pause=0
+    if len(self.files)!=0:
+        self.choose_song()
+        self.play()
+        self.pause=0
