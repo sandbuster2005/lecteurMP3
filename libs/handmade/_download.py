@@ -1,6 +1,5 @@
 #made by sand
 from libs.youtube_search import YoutubeSearch
-
 from .utils import *
 def init_download(self):
     pass
@@ -24,14 +23,14 @@ def yt_search(self):
     if all_numbers(word,10,1):
         title=replace(results[int(word)].get("title"),["(","'",'"',")"," ",":","|","&"])#formatage pour eviter les crash
         link="https://www.youtube.com"+results[int(word)].get("url_suffix")
-        print(link)
+        print(link) 
         self.external_call(["ls"],shell=True)
         self.external_call([f"./yt-dlp -x --audio-format mp3 -o {self.path_to_file}download/{title} {link} "], shell=True)# telechargement en externe en .mp3
 
 
 def dl_yt_playlist(self):
     """
-    cette fonction permet d'enregistrer une chanson/ playlist de chanson  a partir de son url
+    cette fonction permet d'enregistre une chanson/ playlist de chanson  a partir de son url
     """
     playlist=input("playlist/song url:")
     lenght=input("lenght of playlist:")#wip
