@@ -12,6 +12,7 @@ def get_param(self):
     data=get_data(self.param,["|",",","#"])# pour extraire les donné
     if data==[] or len(data)!=8:# si les donné sont corrompu ou n'existe pas
         self.write_param()
+        self.help_menu()
         
     else:# attribution des parametre
         self.path_to_file=data[0][0][0]
@@ -38,7 +39,6 @@ def write_param(self):
     data=join_list(data,["|",",","#"])# formatage pour l'ecriture
     write_file(self.param,data)
     self.sort_command()
-    self.help_menu()
     
 def reset(self):
     """

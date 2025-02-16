@@ -1,3 +1,4 @@
+#made by sand
 import os
 from os.path import isfile
 def write_file(file:str,data="")-> None:

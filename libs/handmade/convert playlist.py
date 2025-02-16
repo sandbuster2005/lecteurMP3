@@ -1,3 +1,4 @@
+#made by sand
 def replace(word:str,chrs:list):return "".join([word[x]*(1-(word[x] in chrs)) for x in range(len(word))])
 from os import listdir
 import os

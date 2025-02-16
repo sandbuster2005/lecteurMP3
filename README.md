@@ -18,9 +18,15 @@ function currenctly include :
 - enter youtube link and download
 - edit file
 - favorite(WIP)
-	
-planned:
--NA
+
+required dependancy:
+- vlc
+- yt-dlp
+- FOR ARCH    : alsa-lib
+- FOR UNBUNTU : libasound2-dev
+
+for python:
+alsaaudio
 	
 there are still bug every now and then but hey it work 
 
