@@ -28,7 +28,7 @@ required dependancy:
 for python:
 linux : alsaaudio
 
-windows version is in the making but cli is not really addapred to windows
+windows version is in the making but cli is not really adapted to windows
 	
 there are still bug every now and then but hey it work 
 
