@@ -1,5 +1,5 @@
 #made by sand
-from time import sleep,monotonic,strftime
+from time import sleep,monotonic
 from libs.progress.bar import Bar
 from math import floor,ceil
 from .utils import *

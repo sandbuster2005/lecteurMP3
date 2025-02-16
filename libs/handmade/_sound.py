@@ -46,7 +46,7 @@ def set_volume(self):
         
 def deafen(self):
     
-    if self.sound_manage r== "base":
+    if self.sound_manager == "base":
         self.mute = 1 - self.mute
         self.player.audio_set_mute( self.mute )
         

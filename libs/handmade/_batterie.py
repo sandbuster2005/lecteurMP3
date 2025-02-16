@@ -44,7 +44,7 @@ def get_battery_life( self ):
         delta = self.battery[ 0 ] - value#differance de batterie
         
         if delta != 0 :
-            lif e= ( value / delta )*( monotonic() - self.battery[ 1 ] )# calcul du temps restant
+            life = ( value / delta )*( monotonic() - self.battery[ 1 ] )# calcul du temps restant
             
             if monotonic() - self.battery[ 1 ] > 180:
                 self.battery = [ value, monotonic() ]# modification de la valeur de referance toute le 3 minute

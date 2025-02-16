@@ -1,6 +1,6 @@
 #made by sand
 from random import randint
-from .utils import all_numbers
+from .utils import *
 
 
 def init_song( self ):

@@ -3,7 +3,7 @@ from os import listdir
 from os.path import isdir,isfile
 from random import randint
 from .utils import *
-
+from time import sleep,strftime
 
 def init_image( self ):
     
