@@ -26,7 +26,9 @@ required dependancy:
 - FOR UNBUNTU : libasound2-dev
 
 for python:
-alsaaudio
+linux : alsaaudio
+
+windows version is in the making but cli is not really addapred to windows
 	
 there are still bug every now and then but hey it work 
 
