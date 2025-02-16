@@ -6,6 +6,10 @@ from random import randint
 from .utils import *
 
 def init_image(self):
+    if self.sys_architecture=="x86_64":
+        self.img_command="./libs/x86/jp2a_x86 --fill --color-depth=8"
+    else:
+        self.img_command="./libs/arm/jp2a_arm --fill --color-depth=8"
     self.path_to_img="appdata/image/"# chemin du dosier image
     self.imgs=[]# liste des images contenu dans le chemin indiqué ,vide = random
     self.img=""# image actuel
@@ -39,10 +43,10 @@ def display_img(self):
     les images doit étre dans le dossiers image du programme
     """
     if self.img!="":# une image est selectionné
-        self.external_call([f"./libs/jp2a --fill --color-depth=8 {self.img}"],True)# image selectionné
+        self.external_call([f"{self.img_command} {self.img}"],True)# image selectionné
         
     if self.img=="" and self.imgs!=[]:# il y a au moins une image et aucune selcetionné
-        self.external_call([f"./libs/jp2a --fill --color-depth=8 {self.imgs[randint(0,len(self.imgs)-1)]}"],True)# image aléatoire
+        self.external_call([f"{self.img_command} {self.imgs[randint(0,len(self.imgs)-1)]}"],True)# image aléatoire
    
    
 def select_img(self):
@@ -68,7 +72,7 @@ def select_img(self):
                 word=""
             
             else:
-                self.external_call([f"./libs/jp2a --fill --color-depth=8 {self.imgs[int(word)]}"],True)
+                self.external_call([f"{self.img_command}  {self.imgs[int(word)]}"],True)
                 confirm=input("y/n ?")
                 if confirm.lower()=="y":
                     self.img=self.imgs[int(word)] # selection

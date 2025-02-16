@@ -1,3 +1,4 @@
+#made by sand
 def white(x:int=40):
     for z in range(x):print("")
 

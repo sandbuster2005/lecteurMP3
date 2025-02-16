@@ -6,7 +6,11 @@ import libs.vlc as vlc
 import threading
 from .utils import *
 import alsaaudio
+import platform
 def init_main(self):
+    self.sys_os=platform.system()
+    self.sys_architecture=platform.machine()
+    print(self.sys_os,self.sys_architecture)
     self.master=alsaaudio.Mixer()
     self.repeat=0#1 pour repeter en boucle la chanson
     self.stay=True# False pour quiter le lecteur
