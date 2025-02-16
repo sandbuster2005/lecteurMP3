@@ -38,6 +38,7 @@ def write_param(self):
     data=join_list(data,["|",",","#"])# formatage pour l'ecriture
     write_file(self.param,data)
     self.sort_command()
+    self.help_menu()
     
 def reset(self):
     """
