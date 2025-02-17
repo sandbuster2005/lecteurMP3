@@ -92,4 +92,4 @@ def z_f( self ):
     self.suspend( "mani_file" )
     
 def h_f( self ):
-    self.help_menu()
+    self.show_list( self.help_menu(), num=False )

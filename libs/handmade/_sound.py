@@ -1,10 +1,14 @@
 #made by sand
-import alsaaudio
+try :
+    import alsaaudio
+except:
+    pass
 
 
 def init_sound( self ):
     self.sound_manager = "base"#either base for linux and windows or alsa for linux 
     self.mute = 0
+    
     
 def start_sound( self ):    
     if self.sound_manager == "alsa":
@@ -15,7 +19,7 @@ def start_sound( self ):
 def change_sound_manager( self ):
     print( "0: base inclued in vlc" )
     print( "1: alsaaudio , use global volume ONLY on linux" )
-    choice = input("votre choix:")
+    choice = self.ask_list( [ "base inclued in vlc", "alsaaudio , use global volume ONLY on linux" ] )
     
     if choice == "0":
         self.sound_manager = "base"
@@ -25,6 +29,7 @@ def change_sound_manager( self ):
             print(1)
             self.sound_manager = "alsa"
             self.mixer = alsaaudio.Mixer()#start alsa session
+    
     
 def get_volume( self ):
     
@@ -36,6 +41,7 @@ def get_volume( self ):
         volume = self.mixer.getvolume()[ 0 ]
         return volume
         
+        
 def set_volume(self):
     
     if self.sound_manager == "base":
@@ -43,7 +49,8 @@ def set_volume(self):
         
     if self.sound_manager == "alsa":
         self.mixer.setvolume( self.volume )
-        
+       
+       
 def deafen(self):
     
     if self.sound_manager == "base":
@@ -53,3 +60,4 @@ def deafen(self):
     if self.sound_manager== "alsa":
         self.mute = 1 - self.mute
         self.mixer.setmute( self.mute )
+        

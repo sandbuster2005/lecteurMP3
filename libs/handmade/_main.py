@@ -62,7 +62,7 @@ def main( self ):
     self.load_songs()#init
     
     while len( self.files ) == 0:
-        print( "no song in folder" )
+        self.out( "no song in folder" )
         self.change_main_path()
         self.load_songs()
         
@@ -70,7 +70,7 @@ def main( self ):
         self.get_battery_life()#init
 
     if self.sound_manager != "base":
-        print( "volume: {self.volume}" )
+        self.display()
     
     while self.stay != False:
         self.get_input()#interface
@@ -133,7 +133,8 @@ def get_input( self ):
     """
     cette fonction est le menu principal qui permet a l'utilisateur d'interagir avec le programme
     """
-    got = input( ":" ).lower()#ignorer les majuscules
+    got = self.ask( ":" ).lower()#ignorer les majuscules
+    
     if all_numbers( got, len( self.files ), 1 ):#chanson selectionné
             white()
             self.search = False
@@ -197,7 +198,7 @@ def wind( self , mode ):
         self.player.set_time( self.player.get_time() + 10000 )
     
     if mode == 2:
-        self.player.set_time( int( self.player.get_time()-10000 ) )
+        self.player.set_time( int( self.player.get_time() - 10000 ) )
         self.bar.index = max( 0, self.bar.index - 10 )
     
     if mode == 3:

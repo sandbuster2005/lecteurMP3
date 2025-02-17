@@ -45,14 +45,13 @@ def edit_command( self ):
     cette fonction permet de de modifier les commande du programme a
     l'exception de h(help)
     """
-    self.h_f()
-    cmd = input( "enter current command call :" )
+    cmd = self.ask_list( self.help_menu(), text = "enter current command call :", num = False )
     if cmd=="h":
-        print( "help cannot be modified" )
+        self.out( "help cannot be modified" )
         return
     
     if cmd in self.holders:
-        key = input( "new command call :" )
+        key = self.ask( "new command call :" )
         
         if not all_numbers( key ):
              if key not in self.holders:
@@ -61,4 +60,4 @@ def edit_command( self ):
                  self.sort_command()
              
              else:
-                 print( "key already exist" )
+                 self.out( "key already exist" )

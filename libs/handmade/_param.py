@@ -32,7 +32,7 @@ def write_param( self ):
     dans le fichier param
     """
     data = [ str( self.path_to_file ), str( self.path_to_img ), str( self.mode ), self.sound_manager, str( self.img ), str( self.repeat ), self.dirs, self.holders ]# tout les parametre a stocker
-    data = join_list( data,["|", ",", "#"] )# formatage pour l'ecriture
+    data = join_list( data,[ "|", ",", "#" ] )# formatage pour l'ecriture
     write_file( self.param, data )
     self.sort_command()
     

@@ -17,7 +17,7 @@ class App:
     from libs.handmade._command import init_command,sort_command,edit_command         
     from libs.handmade._param import init_param,get_param,write_param,reset 
     from libs.handmade._files import init_file,get_file,select_dir,switch_dir,find_file,check_adress,change_main_path,mani_file
-    from libs.handmade._image import init_image,get_img,display_img,select_img,display,help_menu
+    from libs.handmade._image import init_image,get_img,display_img,select_img,display,help_menu,out,ask,ask_list,show_list
     from libs.handmade._download import init_download,yt_search,dl_yt_playlist  
     from libs.handmade._song import init_song,choose_song,load_songs,play_song,play_last,historic,select,play
     from libs.handmade._main import init_main,main,update,get_input,load_all,wind

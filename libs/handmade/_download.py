@@ -18,13 +18,9 @@ def yt_search( self ):
     certain charactère du titre seront supprimé pour le bon fonctionnement du programme
     """
     self.search = True
-    word = input("votre recherche : ")
-    results = YoutubeSearch( word, max_results = 10 ).to_dict()#10 premier resultat de la recherche youtube
-    
-    for x in range( len( results ) ):
-        print( x, results[ x ].get( "title" ) )
-        
-    word = input( "your selection : " )
+    word = self.ask("votre recherche : ")
+    results = YoutubeSearch( word, max_results = 10 ).to_dict()#10 premier resultat de la recherche youtube     
+    word = self.ask_list( [ results[ x ].get( "title" ) for x in range ( len( results ) ) ])
     
     if all_numbers( word, 10, 1 ):
         title = replace( results[ int( word ) ].get( "title" ), [ "(", "'", '"', ")", " ", ":", "|", "&"] )#formatage pour eviter les crash
@@ -37,8 +33,8 @@ def dl_yt_playlist( self ):
     """
     cette fonction permet d'enregistre une chanson/ playlist de chanson  a partir de son url
     """
-    playlist = input( "playlist/song url:" )
-    lenght = input("lenght of playlist:")#wip
+    playlist = self.ask( "playlist/song url:" )
+    lenght = self.ask("lenght of playlist:")#wip
     
     if all_numbers( lenght ):#wip
         lenght = int( lenght )#wip
