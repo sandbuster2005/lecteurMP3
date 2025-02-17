@@ -15,6 +15,7 @@ def battery_check( self ):
     try:
         with open( "/sys/class/power_supply/BAT0/capacity", "r" ) as f:# emplacement des info batterie 
             value = f.read()
+            
     except:
         self.battery_exist = False
         

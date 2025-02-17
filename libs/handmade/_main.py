@@ -37,6 +37,7 @@ def init_main( self ):
             "c": "pour activer/desactiver des dossiers",
             "d": "pour mute/unmute le son",
             "o": "pour jouer en boucle",
+            "e": "pour changer le message de choix",
             "g": "changer de gestionnaire de volume",
             "j": "pour selectionner une image dans la galerie",
             "t": "pour afficher/cacher les images",
@@ -53,29 +54,29 @@ def main( self ):
     """
     cette fonction est la fonction d'initialisation du programme et de fonctionnement 
     """
-    self.get_param()#init
-    self.start_sound()
-    progress = threading.Thread( target = self.update )#init
-    progress.start()#init
-    self.get_img( self.path_to_img,start = 1 )#init
-    self.check_adress()
-    self.load_songs()#init
+    self.get_param()#get param from file if it exist else create it
+    self.start_sound()#launch sound manager
+    progress = threading.Thread( target = self.update )#create update thread
+    progress.start()
+    self.get_img( self.path_to_img,start = 1 )#scan all image in repertory
+    self.check_adress()#see if current file adress exist
+    self.load_songs()#try to load the song
     
-    while len( self.files ) == 0:
-        print( "no song in folder" )
+    while len( self.files ) == 0:# if folder is empty
+        self.out( "no song in folder" )
         self.change_main_path()
         self.load_songs()
         
-    if self.battery_exist:
+    if self.battery_exist:#your not dumb are you ?
         self.get_battery_life()#init
 
-    if self.sound_manager != "base":
-        print( "volume: {self.volume}" )
+    if self.sound_manager != "base":#base sound manager need a media playing to get voulme
+        self.display()
     
     while self.stay != False:
         self.get_input()#interface
         
-        if not progress.is_alive():
+        if not progress.is_alive():#if update thread crashed quit main thread
            self.stay = False
             
     self.player.stop()#end
@@ -133,7 +134,8 @@ def get_input( self ):
     """
     cette fonction est le menu principal qui permet a l'utilisateur d'interagir avec le programme
     """
-    got = input( ":" ).lower()#ignorer les majuscules
+    got = self.ask( ":" ).lower()#ignorer les majuscules
+    
     if all_numbers( got, len( self.files ), 1 ):#chanson selectionné
             white()
             self.search = False
@@ -197,7 +199,7 @@ def wind( self , mode ):
         self.player.set_time( self.player.get_time() + 10000 )
     
     if mode == 2:
-        self.player.set_time( int( self.player.get_time()-10000 ) )
+        self.player.set_time( int( self.player.get_time() - 10000 ) )
         self.bar.index = max( 0, self.bar.index - 10 )
     
     if mode == 3:
@@ -225,4 +227,4 @@ def wind( self , mode ):
         self.mode = 1 - self.mode
     
     if mode > 0:
-        self.suspend("display")
+        self.suspend( "display" )

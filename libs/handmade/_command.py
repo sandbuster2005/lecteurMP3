@@ -4,10 +4,9 @@ from .utils import *
 
 
 def init_command( self ):
-    self.holders = [ "h", "q", "r", "g", "i", "j", "o", "n", "+", "-", "p", "m", "d", "s", "a", "c", "b", "y", "l", "t", "u", "v", "w", "x", "dl", "z" ]# commande defini par l'utilisateur
-    self.command = [ x for x in range( 24 ) ]# index des commande
-    self.commands = [ "h", "q", "r", "g", "i", "j", "o", "n", "+", "-", "p", "m", "d", "s", "a", "c", "b", "y", "l", "t", "u", "v", "w", "x", "dl", "z" ]# valeurs qui permet d appeler les fonction correspondante 
-    #abcdghijlmnopqrstuvwxyz+- :list des commande utilisé de base
+    self.holders = [ "h", "q", "r", "g", "i", "j", "o", "n", "+", "-", "p", "m", "d", "s", "a", "c", "b", "y", "l", "t", "u", "v", "w", "x", "dl", "z", "e" ]# commande defini par l'utilisateur ( modifiable )
+    self.commands = [ "h", "q", "r", "g", "i", "j", "o", "n", "+", "-", "p", "m", "d", "s", "a", "c", "b", "y", "l", "t", "u", "v", "w", "x", "dl", "z", "e" ]# valeurs qui permet d appeler les fonction correspondante ( PAS TOUCHER )
+    #abcdeghijlmnopqrstuvwxyz+- :list des commande utilisé de base
     #dl
     
 def sort_command( self ):
@@ -15,6 +14,7 @@ def sort_command( self ):
     cette fonction permet de trier les commandes modifié par l'utilisateur
     en fonction de leur taille puis alphabétiquement en gardant le h(help) en priorité dans l'alphabet
     """
+    # all this THING sort commands by lenght then by alphabetical order and put the h on top of the alphabet
     command = self.holders[ 1: ]
     command = sorted( command, key = lambda s: ( -len( s ) ) )
     x = 0
@@ -31,7 +31,7 @@ def sort_command( self ):
         command = command[ :command.index( "h" ) + 1 ]+[ missing ] + command[ command.index( "h" ) + 1 :]
         
     elif len( command[0] ) == 1 :
-        command = ["h"] + command
+        command = [ "h" ] + command
         
     elif len( command[ 0 ] ) > 1:
         command += [ "h" ]
@@ -45,20 +45,19 @@ def edit_command( self ):
     cette fonction permet de de modifier les commande du programme a
     l'exception de h(help)
     """
-    self.h_f()
-    cmd = input( "enter current command call :" )
+    cmd = self.ask_list( self.help_menu(), text = "enter current command call :", num = False )#show current command 
     if cmd=="h":
-        print( "help cannot be modified" )
+        self.out( "help cannot be modified" )
         return
     
     if cmd in self.holders:
-        key = input( "new command call :" )
+        key = self.ask( "new command call :" )
         
         if not all_numbers( key ):
-             if key not in self.holders:
+             if key not in self.holders:#if key don't already exist
                  self.holders[ self.holders.index( cmd ) ] = key
                  self.write_param()
                  self.sort_command()
              
              else:
-                 print( "key already exist" )
+                 self.out( "key already exist" )

@@ -82,39 +82,50 @@ def find_file( self, word ):
     """
     return [ [ self.files[ x ].rsplit( "/" )[ -1 ], x ] for x in range(len(self.files)) if word.lower() in self.files[ x ].lower().rsplit( "/", 1 )[ -1 ] ]#cherche dans la liste de son en ignorant les majuscules    
 
+
 def check_adress( self ):
+    """
+    cette fonction permet de verifier si l'adresse existe et est un dossier
+    """
     if not isdir( self.path_to_file ):
         while not isdir( self.path_to_file ):
-            self.path_to_file = input( "enter valid file path" )
+            self.path_to_file = self.ask( "enter valid file path: " )
+            
     self.write_param()
     
+    
 def change_main_path( self ):
+    """
+    cette fonction permet de changer l'adresse des chansons
+    """
     self.path_to_file = ""
     self.check_adress()
-        
+     
+     
 def mani_file(self):
+    """
+    cette fonction permet de supprimer , deplacer(dans les dossiers connu)
+    et renommer le fichier actuel
+    """
     if self.song != None:
-        print( "0:delete " )
-        print( "1:move" )
-        print( "2:rename" )
-        word = input( " your choice :" )
+        word = self.ask_list( [ "delete ", "move", "rename"] )
         if all_numbers( word, 2 ):
             if int( word ) == 0:
-                choice = input( "are you sure (y/n)" )
+                choice = self.ask( "are you sure (y/n)" )
                 
-                if choice=="y":
-                    rm_file(self.song)
+                if choice == "y":
+                    rm_file( self.song )
                 
             if int( word ) == 1:
-                for x in range( len( self.dirs ) ):
-                    print( x, self.dirs[ x ][ 0 ] )
+                choice = self.ask_list( [ self.dirs[ x ][ 0 ] for x in range( len( self.dirs ) ) ] )
                 
-                choice = input("where to move the file")
-                if all_numbers(choice,len(self.dirs),mode=1):
+                if all_numbers( choice, len( self.dirs ), mode = 1 ):
                     mv_file( self.song, self.dirs[ int( choice ) ][ 0 ] + "/" + self.song.rsplit( "/", 1 )[ 1 ] )
                 
             if int( word ) == 2:
-                choice = input( "new_name :" )
+                choice = self.ask( "new_name :" )
                 mv_file( self.song, self.song.rsplit( "/",1 )[ 0 ] + choice + "." + self.song.rsplit( ".",1 )[ 1 ])
                 
-            self.files=self.load_playlist(self.playlist)
+            self.files=self.load_songs()
+            
+            

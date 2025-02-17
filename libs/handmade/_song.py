@@ -81,8 +81,7 @@ def historic( self ):
     """
     cette fonction affiche l'historique d'écoute de la session 
     """
-    for x in range( len( self.played ) ):
-        print( str( self.played[ x ] ) + " : ", self.files[ self.played [x ] ].rsplit( "/",1 )[ -1 ] )# index : nom
+    self.show_list( [ f"{ self.played[ x ] }: { self.files[ self.played [ x ] ].rsplit( "/",1 )[ -1 ] }" for x in range( len( self.played ) ) ], num = False )# index : nom
         
 
 def select( self ):
@@ -94,10 +93,10 @@ def select( self ):
     """
     self.search = True
     white( 1 )
-    INPUT = input( "rechercher dans la liste de chanson :" )
+    INPUT = self.ask( "rechercher dans la liste de chanson :" )
     result = self.find_file( str( INPUT ) )#recherche dans les fichiers
     
     for x in range( len( result ) ):
-        print(f"{ result[ x ][ 1 ] } :{ result[ x ][ 0 ] }")
+        self.show_list( [ f"{ result[ x ][ 1 ] } :{ result[ x ][ 0 ] }" for x in range( len( result ) ) ] )
         
     self.get_input()
