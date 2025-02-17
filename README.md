@@ -7,7 +7,6 @@ and good looking with plenty functions
 function currenctly include :
 - playing mp3,waw,m4a
 - search song in loaded by name
-- create and edit playlists
 - show historic of current session
 - show image chosen or random and allow to add images
 - change main music directory
