@@ -103,6 +103,26 @@ def change_main_path( self ):
     self.check_adress()
 
 
+def select_dir( self ):
+    """
+    cette fonction permet d'activer/desactiver des dossiers de la liste de dossier sous dossier
+    pour oculter les chanson qu'il contient
+
+    limite:
+    demande une valeur numérique a l'utilisateur pour selectionner un dossier/sous dossiers
+    """
+    word = "0"
+    while all_numbers( word ):
+        white()
+    
+        for x in range( len( self.Core.dirs ) ):
+            print( x, self.Core.dirs[ x ] )
+        
+        word = self.Display.ask_list( self.Core.dirs, text = "switch folder on/off:" )
+    
+        if all_numbers( word, len( self.Core.dirs ), 1 ):
+            self.Core.switch_dir( int( word ) )
+
 def change_sound_manager( self ):
     """
     cette fonction permet de changer le gestionnaire

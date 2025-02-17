@@ -37,7 +37,7 @@ def help_menu( self ):
         cette fonction se sert du dico qui contient les info pour renvoier une
         liste de toute les info
         """
-        return [ "entrer un nombre pour lancer la chanson correspondante", "ne rien rentrer pour mettre pause/actualiser" ]+[f"{ self.holders[ x ] } : { self.tooltips[ self.commands[ x ] ] }" for x in range( len( self.commands ) ) ]
+        return [ "entrer un nombre pour lancer la chanson correspondante", "ne rien rentrer pour mettre pause/actualiser" ]+[f"{ self.Command.holders[ x ] } : { self.Command.tooltips[ self.Command.commands[ x ] ] }" for x in range( len( self.Command.commands ) ) ]
 
 
 def main( self ):
@@ -136,7 +136,7 @@ def get_input( self ):
     if self.search:#recherche terminé
         self.search = False
         
-    elif got == "" and self.song != None:#pause 
+    elif got == "" and self.Core.song != None:#pause 
         self.wind( 6 )
         
     x = 0
@@ -164,8 +164,8 @@ def load_all( self ):
     cette fonction permet de recharger toute les images ainsi que toute les chanson et
     remmetre a 0 le lecteur en passant
     """
-    self.player.stop()
-    self.load_songs()
+    self.Core.player.stop()
+    self.Core.load_songs()
     self.Image.get_img( self.Image.path_to_img, start = 1 )
     
     

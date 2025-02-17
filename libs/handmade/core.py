@@ -55,27 +55,6 @@ class Core:
         return files
 
 
-    def select_dir( self ):
-        """
-        cette fonction permet d'activer/desactiver des dossiers de la liste de dossier sous dossier
-        pour oculter les chanson qu'il contient
-    
-        limite:
-        demande une valeur numérique a l'utilisateur pour selectionner un dossier/sous dossiers
-        """
-        word = "0"
-        while all_numbers( word ):
-            white()
-        
-            for x in range( len( self.dirs ) ):
-                print( x, self.dirs[ x ] )
-            
-            word = self.Display.ask_list( self.dirs, text = "switch folder on/off:" )
-        
-            if all_numbers( word, len( self.dirs ), 1 ):
-                self.switch_dir( int( word ) )
-
-
     def switch_dir( self, word ):
         """
         cette fonction permet d'activer ou desactiver un dossier de la liste
