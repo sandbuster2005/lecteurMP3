@@ -55,7 +55,6 @@ def main( self ):
     cette fonction est la fonction d'initialisation du programme et de fonctionnement 
     """
     self.get_param()#get param from file if it exist else create it
-    self.start_sound()#launch sound manager
     progress = threading.Thread( target = self.update )#create update thread
     progress.start()
     self.get_img( self.path_to_img,start = 1 )#scan all image in repertory
