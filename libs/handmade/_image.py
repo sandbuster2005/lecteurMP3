@@ -121,24 +121,35 @@ def display( self ):
     
     
 def help_menu( self ):
-    
+    """
+    cette fonction se sert du dico qui contient les info pour renvoier une
+    liste de toute les info
+    """
     return [ "entrer un nombre pour lancer la chanson correspondante", "ne rien rentrer pour mettre pause/actualiser" ]+[f"{ self.holders[ x ] } : { self.tooltips[ self.commands[ x ] ] }" for x in range( len( self.commands ) ) ]
 
 
 def out( self, text ):
-    
+    """
+    cette fonction permet d'afficher un message text a l'utilisateur
+    """
     if self.graphic_manager == "base":
         print( text )
 
 
 def ask( self, text ):
-    
+    """
+    cette fonction permet de demander une valeur a l'utilisateur
+    en lui demandant text
+    """
     if self.graphic_manager == "base":
         return input( f"{ text }" )
 
 
 def show_list( self, liste, num = True ):
-    
+    """
+    cette fonction permet d afficher les elements d'une liste un
+    par un ,numeroté ou non
+    """
     if self.graphic_manager == "base":
         if num == True:
             for x in range( len( liste ) ):
@@ -150,6 +161,10 @@ def show_list( self, liste, num = True ):
   
   
 def ask_list( self, liste, text = "" , num = True ):
+    """
+    cette fonction affiche a l'utilisateur une liste et lui demande
+    une valeur a l'aide d un prompt text
+    """
     if text == "":
         text = self.confirmation
         
@@ -159,6 +174,10 @@ def ask_list( self, liste, text = "" , num = True ):
 
 
 def change_confirmation( self ):
+    """
+    cette fonction permet de changer le prompt par defaut de
+    la fonction ask_list
+    """
     self.confirmation = self.ask( "new choice prompt" )
     
     

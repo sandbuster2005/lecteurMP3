@@ -10,29 +10,35 @@ def init_sound( self ):
     self.mute = 0
     
     
-def start_sound( self ):    
+def start_sound( self ):
+    """
+    cette fonction permet de demmarer les gestionnaire de son externe
+    qui le nécessite
+    """
     if self.sound_manager == "alsa":
         self.mixer = alsaaudio.Mixer()  
     self.volume = self.get_volume()
     
   
 def change_sound_manager( self ):
-    print( "0: base inclued in vlc" )
-    print( "1: alsaaudio , use global volume ONLY on linux" )
+    """
+    cette fonction permet de changer le gestionnaire
+    """
     choice = self.ask_list( [ "base inclued in vlc", "alsaaudio , use global volume ONLY on linux" ] )
     
     if choice == "0":
         self.sound_manager = "base"
         
     if choice == "1":
-        if "linux" in self.sys_os:
-            print(1)
+        if "linux" in self.sys_os:#si le systeme est compatible
             self.sound_manager = "alsa"
-            self.mixer = alsaaudio.Mixer()#start alsa session
+            self.start_sound()#start alsa session
     
     
 def get_volume( self ):
-    
+    """
+    cette fonction renvoie le volume actuel
+    """
     if self.sound_manager == "base":
        volume = self.player.audio_get_volume()
        return volume
@@ -43,7 +49,9 @@ def get_volume( self ):
         
         
 def set_volume(self):
-    
+    """
+    cette fonction permet de mettre le volume a une valeur predéfini
+    """
     if self.sound_manager == "base":
         self.player.audio_set_volume( self.volume )
         
@@ -52,7 +60,9 @@ def set_volume(self):
        
        
 def deafen(self):
-    
+    """
+    cette fonction permet de rendre audible/mettre en sourdine 
+    """
     if self.sound_manager == "base":
         self.mute = 1 - self.mute
         self.player.audio_set_mute( self.mute )

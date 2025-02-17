@@ -14,6 +14,7 @@ def sort_command( self ):
     cette fonction permet de trier les commandes modifié par l'utilisateur
     en fonction de leur taille puis alphabétiquement en gardant le h(help) en priorité dans l'alphabet
     """
+    # all this THING sort commands by lenght then by alphabetical order and put the h on top of the alphabet
     command = self.holders[ 1: ]
     command = sorted( command, key = lambda s: ( -len( s ) ) )
     x = 0
@@ -30,7 +31,7 @@ def sort_command( self ):
         command = command[ :command.index( "h" ) + 1 ]+[ missing ] + command[ command.index( "h" ) + 1 :]
         
     elif len( command[0] ) == 1 :
-        command = ["h"] + command
+        command = [ "h" ] + command
         
     elif len( command[ 0 ] ) > 1:
         command += [ "h" ]
@@ -44,7 +45,7 @@ def edit_command( self ):
     cette fonction permet de de modifier les commande du programme a
     l'exception de h(help)
     """
-    cmd = self.ask_list( self.help_menu(), text = "enter current command call :", num = False )
+    cmd = self.ask_list( self.help_menu(), text = "enter current command call :", num = False )#show current command 
     if cmd=="h":
         self.out( "help cannot be modified" )
         return
@@ -53,7 +54,7 @@ def edit_command( self ):
         key = self.ask( "new command call :" )
         
         if not all_numbers( key ):
-             if key not in self.holders:
+             if key not in self.holders:#if key don't already exist
                  self.holders[ self.holders.index( cmd ) ] = key
                  self.write_param()
                  self.sort_command()

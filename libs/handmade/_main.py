@@ -54,29 +54,29 @@ def main( self ):
     """
     cette fonction est la fonction d'initialisation du programme et de fonctionnement 
     """
-    self.get_param()#init
-    self.start_sound()
-    progress = threading.Thread( target = self.update )#init
-    progress.start()#init
-    self.get_img( self.path_to_img,start = 1 )#init
-    self.check_adress()
-    self.load_songs()#init
+    self.get_param()#get param from file if it exist else create it
+    self.start_sound()#launch sound manager
+    progress = threading.Thread( target = self.update )#create update thread
+    progress.start()
+    self.get_img( self.path_to_img,start = 1 )#scan all image in repertory
+    self.check_adress()#see if current file adress exist
+    self.load_songs()#try to load the song
     
-    while len( self.files ) == 0:
+    while len( self.files ) == 0:# if folder is empty
         self.out( "no song in folder" )
         self.change_main_path()
         self.load_songs()
         
-    if self.battery_exist:
+    if self.battery_exist:#your not dumb are you ?
         self.get_battery_life()#init
 
-    if self.sound_manager != "base":
+    if self.sound_manager != "base":#base sound manager need a media playing to get voulme
         self.display()
     
     while self.stay != False:
         self.get_input()#interface
         
-        if not progress.is_alive():
+        if not progress.is_alive():#if update thread crashed quit main thread
            self.stay = False
             
     self.player.stop()#end

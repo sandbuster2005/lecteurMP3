@@ -84,6 +84,9 @@ def find_file( self, word ):
 
 
 def check_adress( self ):
+    """
+    cette fonction permet de verifier si l'adresse existe et est un dossier
+    """
     if not isdir( self.path_to_file ):
         while not isdir( self.path_to_file ):
             self.path_to_file = self.ask( "enter valid file path: " )
@@ -92,11 +95,18 @@ def check_adress( self ):
     
     
 def change_main_path( self ):
+    """
+    cette fonction permet de changer l'adresse des chansons
+    """
     self.path_to_file = ""
     self.check_adress()
      
      
 def mani_file(self):
+    """
+    cette fonction permet de supprimer , deplacer(dans les dossiers connu)
+    et renommer le fichier actuel
+    """
     if self.song != None:
         word = self.ask_list( [ "delete ", "move", "rename"] )
         if all_numbers( word, 2 ):
@@ -116,6 +126,6 @@ def mani_file(self):
                 choice = self.ask( "new_name :" )
                 mv_file( self.song, self.song.rsplit( "/",1 )[ 0 ] + choice + "." + self.song.rsplit( ".",1 )[ 1 ])
                 
-            self.files=self.load_playlist(self.playlist)
+            self.files=self.load_songs()
             
             
