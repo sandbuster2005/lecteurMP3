@@ -32,13 +32,27 @@ def yt_search( self ):
 def dl_yt_playlist( self ):
     """
     cette fonction permet d'enregistre une chanson/ playlist de chanson  a partir de son url
+    elle verifie aussi si toute les chanson on été télécharger sans probléme
     """
     playlist = self.ask( "playlist/song url:" )
-    lenght = self.ask("lenght of playlist:")#wip
-    
-    if all_numbers( lenght ):#wip
-        lenght = int( lenght )#wip
-        for f in listdir( "{ self.path_to_file }/download" ):#wip
-            lenght += 1#wip
+    lenght = self.ask("lenght of playlist:")
+    new_lenght=0
+    if all_numbers( lenght ):
+        lenght = int( lenght )
+        for f in listdir( "{ self.path_to_file }/download" ):
+            lenght += 1
             
         self.external_call( [ f"./yt-dlp -x --audio-format mp3 -P /{ self.path_to_file }download/ { playlist } " ], shell = True ) # telechargement chanson / playlist en .mp3
+        
+        for f in listdir( "{ self.path_to_file }/download" ):
+            new_lenght += 1
+        
+        if new_lenght!=lenght:
+            self.out( f"{ lenght-new_lenght } songs don't seem to have been downloaded" )
+            
+
+
+
+
+
+
