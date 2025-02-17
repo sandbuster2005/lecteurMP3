@@ -17,16 +17,16 @@ function currenctly include :
 - search on youtube and download
 - enter youtube link and download
 - edit file
-- favorite(WIP)
 
 required dependancy:
 - vlc
 - yt-dlp
+To use alsaaudio :
 - FOR ARCH    : alsa-lib
 - FOR UNBUNTU : libasound2-dev
 
 for python:
-linux : alsaaudio
+linux : alsaaudio if you want to use it
 
 windows version is in the making but cli is not really adapted to windows
 	
