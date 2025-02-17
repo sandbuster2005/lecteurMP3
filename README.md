@@ -21,7 +21,7 @@ function currenctly include :
 required dependancy:
 - vlc
 - yt-dlp
-To use alsaaudio :
+- To use alsaaudio :
 - FOR ARCH    : alsa-lib
 - FOR UNBUNTU : libasound2-dev
 
