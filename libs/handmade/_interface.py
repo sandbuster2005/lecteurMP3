@@ -15,7 +15,8 @@ def select_img( self ):
 
     word = "0"
     while all_numbers( word , len( self.Image.imgs ) ):
-        word = self.Display.ask_list( self.Image.imgs + " random ", text = "select img:" )
+        self.Image.imgs.append("random")
+        word = self.Display.ask_list( self.Image.imgs, text = "select img:" )
     
         if all_numbers( word, len( self.Image.imgs ) ):
             if int( word ) == len( self.Image.imgs ):
@@ -23,7 +24,7 @@ def select_img( self ):
                 word = ""
         
             else:
-                external_call( [ f"{ self.img_command }  { self.imgs[ int( word ) ] }" ], True )
+                self.external_call( [ f"{ self.Image.img_command }  { self.Image.imgs[ int( word ) ] }" ], True )
                 confirm = self.Display.ask( "y/n ?" )
             
                 if confirm.lower() == "y":
