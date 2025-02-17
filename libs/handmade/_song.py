@@ -1,73 +1,102 @@
 #made by sand
 from random import randint
-from .utils import all_numbers
-def init_song(self):
+from .utils import *
+
+
+def init_song( self ):
     #SONG variables
-    self.song=None# son aactuelle
-    self.mode=0# 0:aleatoire 1:dans'l'ordre
+    self.song = None# son aactuelle
+    self.mode = 0# 0:aleatoire 1:dans'l'ordre
         
-def choose_song(self):
+        
+def choose_song( self ):
     """
     cette fonction permet de:
     choisir une chanson aléatoire : mode 0
     choisit la chanson qui suit dans la liste : mode 1 
     """
-    if self.mode==0:
-        self.song=self.files[randint(0,len(self.files)-1)]#chanson aleatoire
+    if self.mode == 0:
+        self.song = self.files[ randint( 0, len( self.files ) - 1 ) ]#chanson aleatoire
         
-    if self.mode==1:
-        if self.song==None:
-            self.song=self.files[0]# si pas de chanson joué avant prendre la premiére
+    if self.mode == 1:
+        if self.song == None:
+            self.song = self.files[ 0 ]# si pas de chanson joué avant prendre la premiére
             
         else:
-            self.song=self.files[(self.files.index(self.song)+1)%len(self.files)]#chanson suivante : index+1
+            self.song = self.files[ ( self.files.index( self.song ) + 1 ) % len( self.files ) ]#chanson suivante : index+1
 
 
-def add_song(self):
-    """
-    cette fonction permet de rajouter des chansons a une playlist
-    une par une ou par dossiers si elle n en font pas deja parti
-    
-    limite:
-    les chansons individuel doivent etre chargé en mémoire pour etre ajouté et ajouter par leur nombre actuel
-    la fonction demande des valeurs numérique a l'utilisateur afin de selectionner des dossier/sous dossier/chanson
-    """
-    playlist=self.select_playlist()
-    if playlist!=None:
-        i=0
-        for x in self.dirs:
-            print(i,self.dirs[i][0]);i+=1
-            
-        print(i,"enter song by number")
-        word="1"
-        while all_numbers(word):
-            word=input("select :")#choisir playlist 
-            if all_numbers(word,len(self.dirs)):
-                if int(word)==len(self.dirs):#ajouter par chason
-                    while all_numbers(word):
-                        word=input("enter song number:")
-                        if all_numbers(word,len(self.files),1):
-                            self.edit_psong(playlist,song=word)
-                        
-                else:
-                    self.edit_psong(playlist,dirs=word)# ajouter par repertoire
-           
-              
-def load_songs(self,playlist=""):
+def load_songs( self ):
     """
     cette fonction permet de charge en memoire les chanson de la playlist selectionné/toute
     et de remmetre a 0 le lecteur
     """     
-    self.files=self.load_playlist(playlist)
-    self.song=None
-    self.bar=None
+    self.files = self.get_file( self.path_to_file, [] )
+    self.song = None
+    self.bar = None
 
 
-def play_song(self):
+def play_song( self ):
     """
     cette fonction lance le choix de chanson et la joue
     """
-    if len(self.files)!=0:
+    if len( self.files ) != 0:
         self.choose_song()
         self.play()
-        self.pause=0
+        self.pause = 0
+    
+    
+def play( self ):
+    """
+    cette fonction lance la musique actuel ,l'ajoute a l'historique et affiche l intérface
+    
+    limite:
+    une musique doit étre selectionné au préalable 
+    """
+    self.bar = None
+    
+    if self.played == []:
+        self.played.append( self.files.index( self.song ) )# ajoute a l'historique
+        
+    elif self.played[ -1 ] != self.files.index( self.song ):# ajoute a l'historique si la chanson a changé
+        self.played.append( self.files.index( self.song ) )
+        
+    self.player.set_mrl( self.song )# charge la chanson
+    self.player.play()
+    self.suspend( "display" )# affiche
+    
+    
+def play_last( self ):
+    """
+    cette fonction permet de jouer la chanson precedante a condition qu'il y en est une
+    """
+    if len(self.played) > 1:
+        self.played.pop()
+        self.song = self.files[ self.played[ -1 ] ]
+        self.bar = None
+        self.play()
+        
+        
+def historic( self ):
+    """
+    cette fonction affiche l'historique d'écoute de la session 
+    """
+    self.show_list( [ f"{ self.played[ x ] }: { self.files[ self.played [ x ] ].rsplit( "/",1 )[ -1 ] }" for x in range( len( self.played ) ) ], num = False )# index : nom
+        
+
+def select( self ):
+    """
+    cette fonction permet de chercher une chanson dans la liste chargé de chanson et l'affiche
+    
+    limite:
+    cette fonction demande une chaine de charactére a rechercher dans les données de l'utilisateur
+    """
+    self.search = True
+    white( 1 )
+    INPUT = self.ask( "rechercher dans la liste de chanson :" )
+    result = self.find_file( str( INPUT ) )#recherche dans les fichiers
+    
+    for x in range( len( result ) ):
+        self.show_list( [ f"{ result[ x ][ 1 ] } :{ result[ x ][ 0 ] }" for x in range( len( result ) ) ] )
+        
+    self.get_input()
