@@ -8,7 +8,7 @@ except:
 def init_sound( self ):
     self.sound_manager = "base"#either base for linux and windows or alsa for linux 
     self.mute = 0
-    
+    self.start_sound()
     
 def start_sound( self ):
     """
@@ -18,21 +18,6 @@ def start_sound( self ):
     if self.sound_manager == "alsa":
         self.mixer = alsaaudio.Mixer()  
     self.volume = self.get_volume()
-    
-  
-def change_sound_manager( self ):
-    """
-    cette fonction permet de changer le gestionnaire
-    """
-    choice = self.ask_list( [ "base inclued in vlc", "alsaaudio , use global volume ONLY on linux" ] )
-    
-    if choice == "0":
-        self.sound_manager = "base"
-        
-    if choice == "1":
-        if "linux" in self.sys_os:#si le systeme est compatible
-            self.sound_manager = "alsa"
-            self.start_sound()#start alsa session
     
     
 def get_volume( self ):

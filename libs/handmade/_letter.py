@@ -19,7 +19,7 @@ def q_f( self ):
 
 
 def r_f( self ):
-    self.select()
+    self.Core.select()
 
 
 def g_f( self ):
@@ -27,7 +27,7 @@ def g_f( self ):
 
 
 def i_f( self ):
-    self.suspend( "historic" )
+    self.suspend( "Core.historic" )
 
 
 def j_f( self ):
@@ -35,7 +35,8 @@ def j_f( self ):
 
 
 def n_f( self ):
-    self.play_song()
+    self.Core.play_song()
+    self.suspend( "display" )# affiche
 
 def e_f( self ):
     self.change_confirmation()
@@ -78,11 +79,11 @@ def a_f( self ):
 
 def c_f( self ):
     self.suspend( "select_dir" )
-    self.load_songs()
+    self.load_all()
 
 
 def b_f( self ):
-    self.play_last()
+    self.Core.play_last()
 
 
 def dl_f( self ):
@@ -119,5 +120,5 @@ def z_f( self ):
  
  
 def h_f( self ):
-    self.show_list( self.help_menu(), num=False )
+    self.Display.show_list( self.help_menu(), num=False )
 
