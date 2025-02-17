@@ -225,4 +225,4 @@ def wind( self , mode ):
         self.mode = 1 - self.mode
     
     if mode > 0:
-        self.suspend("display")
+        self.suspend( "display" )

@@ -21,7 +21,7 @@ def yt_search( self ):
     word = input("votre recherche : ")
     results = YoutubeSearch( word, max_results = 10 ).to_dict()#10 premier resultat de la recherche youtube
     
-    for x in range( len( esults ) ):
+    for x in range( len( results ) ):
         print( x, results[ x ].get( "title" ) )
         
     word = input( "your selection : " )
