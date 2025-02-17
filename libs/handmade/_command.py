@@ -4,10 +4,9 @@ from .utils import *
 
 
 def init_command( self ):
-    self.holders = [ "h", "q", "r", "g", "i", "j", "o", "n", "+", "-", "p", "m", "d", "s", "a", "c", "b", "y", "l", "t", "u", "v", "w", "x", "dl", "z" ]# commande defini par l'utilisateur
-    self.command = [ x for x in range( 24 ) ]# index des commande
-    self.commands = [ "h", "q", "r", "g", "i", "j", "o", "n", "+", "-", "p", "m", "d", "s", "a", "c", "b", "y", "l", "t", "u", "v", "w", "x", "dl", "z" ]# valeurs qui permet d appeler les fonction correspondante 
-    #abcdghijlmnopqrstuvwxyz+- :list des commande utilisé de base
+    self.holders = [ "h", "q", "r", "g", "i", "j", "o", "n", "+", "-", "p", "m", "d", "s", "a", "c", "b", "y", "l", "t", "u", "v", "w", "x", "dl", "z", "e" ]# commande defini par l'utilisateur ( modifiable )
+    self.commands = [ "h", "q", "r", "g", "i", "j", "o", "n", "+", "-", "p", "m", "d", "s", "a", "c", "b", "y", "l", "t", "u", "v", "w", "x", "dl", "z", "e" ]# valeurs qui permet d appeler les fonction correspondante ( PAS TOUCHER )
+    #abcdeghijlmnopqrstuvwxyz+- :list des commande utilisé de base
     #dl
     
 def sort_command( self ):

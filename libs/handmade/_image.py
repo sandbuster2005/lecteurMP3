@@ -18,6 +18,7 @@ def init_image( self ):
     self.img = ""# image actuel
     self.show = True# affiche ou non l'image selectionné
     self.graphic_manager="base"
+    self.confirmation="your choice: "
     
 def get_img( self, path, files = [], start = 0 ):
     """
@@ -146,14 +147,19 @@ def show_list( self, liste, num = True ):
         else:
             for x in liste:
                 print( x )
-    
-def ask_list( self, liste, text = "your choice: "  , num = True ):
-    
+  
+  
+def ask_list( self, liste, text = "" , num = True ):
+    if text == "":
+        text = self.confirmation
+        
     if self.graphic_manager == "base":
         self.show_list( liste, num )
         return input( f"{ text }" )
 
 
+def change_confirmation( self ):
+    self.confirmation = self.ask( "new choice prompt" )
     
     
     

@@ -37,6 +37,7 @@ def init_main( self ):
             "c": "pour activer/desactiver des dossiers",
             "d": "pour mute/unmute le son",
             "o": "pour jouer en boucle",
+            "e": "pour changer le message de choix",
             "g": "changer de gestionnaire de volume",
             "j": "pour selectionner une image dans la galerie",
             "t": "pour afficher/cacher les images",
