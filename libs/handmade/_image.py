@@ -3,27 +3,7 @@ from os import listdir
 from os.path import isdir,isfile
 from random import randint
 from .utils import *
-from time import sleep,strftime
-import sys
-import asyncio
 
-def up():
-    # My terminal breaks if we don't flush after the escape-code
-    sys.stdout.write('\x1b[1A')
-    sys.stdout.flush()
-
-def down():
-    # I could use '\x1b[1B' here, but newline is faster and easier
-    sys.stdout.write('\n')
-    sys.stdout.flush()
-    
-def save():
-    sys.stdout.write("\x1b[s")
-    sys.stdout.flush()
-    
-def load():
-    sys.stdout.write("\x1b[u")
-    sys.stdout.flush()
     
 def init_image( self ):
     
@@ -107,42 +87,6 @@ def select_img( self ):
             
         self.display()
         
-        
-def display( self ):
-    """
-    cette fonction affiche l'image ,recupére la durée de la chanson ainsi que le nom de la chanson en cours,
-    le volume de la musique ainsi que creer la bar de progression si besoin
-    
-    limite:
-    il est nécessaire qu'une chanson soit selectionné
-    """
-    sys.stdout.flush()
-    save()
-    up()
-    if self.song != None:
-        a = "/"
-        sleep( 0.10 )
-        white()
-        time=strftime( "%H %M" ).split( " " )# affiche l'heure au format standard
-        self.volume = self.get_volume()
-        
-        if self.show:
-            self.display_img()
-            
-        if self.battery_exist:
-            self.get_battery_life()
-            print( f"{ time[ 0 ] }:{ time[ 1 ] }  batterie : { self.get_battery() } %  { self.battery_life } h    volume: { self.volume }% " )# heure,batterie,temps restant,volume
-            
-        else:
-            print( f"{ time[ 0 ] }:{ time[ 1 ] }   volume: { self.volume }% " )# heure,volume
-            
-        print( f"Song: { self.files.index( self.song ) }:{ self.song.rsplit( a, 1 )[ 1 ] }" )# playlist,index,chanson
-    
-    else:
-        if self.sound_manager != "base":
-            print( f"volume :{self.volume}" )
-    down()
-    load()
     
 def help_menu( self ):
     """
