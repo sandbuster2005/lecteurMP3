@@ -135,7 +135,6 @@ def update( self ):
                 save()
                 up()
                 self.bar.update()
-                down()
                 load()
                 
             if ceil( time/1000 ) >= self.bar.max : #la chanson est fini# la chason est bien fini et ne vien pas de commencer
@@ -164,6 +163,7 @@ def check_time(self):
                         self.choose_song()
             
                     self.play()
+                    lup(0)
                     sys.stdout.write(":")
                     sys.stdout.flush()
 
@@ -176,9 +176,8 @@ def display( self ):
     limite:
     il est nécessaire qu'une chanson soit selectionné
     """
-    sys.stdout.flush()
     save()
-    up()
+    lup()
     if self.song != None:
         a = "/"
         sleep( 0.10 )
@@ -201,8 +200,10 @@ def display( self ):
     else:
         if self.sound_manager != "base":
             print( f"volume :{self.volume}" )
-    down()
+    ldown()
     load()
+    
+    
     
     
 def get_input( self ):
