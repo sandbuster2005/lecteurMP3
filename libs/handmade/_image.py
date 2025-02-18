@@ -4,7 +4,27 @@ from os.path import isdir,isfile
 from random import randint
 from .utils import *
 from time import sleep,strftime
+import sys
+import asyncio
 
+def up():
+    # My terminal breaks if we don't flush after the escape-code
+    sys.stdout.write('\x1b[1A')
+    sys.stdout.flush()
+
+def down():
+    # I could use '\x1b[1B' here, but newline is faster and easier
+    sys.stdout.write('\n')
+    sys.stdout.flush()
+    
+def save():
+    sys.stdout.write("\x1b[s")
+    sys.stdout.flush()
+    
+def load():
+    sys.stdout.write("\x1b[u")
+    sys.stdout.flush()
+    
 def init_image( self ):
     
     if "64" in self.sys_architecture:
@@ -96,6 +116,9 @@ def display( self ):
     limite:
     il est nécessaire qu'une chanson soit selectionné
     """
+    sys.stdout.flush()
+    save()
+    up()
     if self.song != None:
         a = "/"
         sleep( 0.10 )
@@ -118,7 +141,8 @@ def display( self ):
     else:
         if self.sound_manager != "base":
             print( f"volume :{self.volume}" )
-    
+    down()
+    load()
     
 def help_menu( self ):
     """
@@ -126,7 +150,6 @@ def help_menu( self ):
     liste de toute les info
     """
     return [ "entrer un nombre pour lancer la chanson correspondante", "ne rien rentrer pour mettre pause/actualiser" ]+[f"{ self.holders[ x ] } : { self.tooltips[ self.commands[ x ] ] }" for x in range( len( self.commands ) ) ]
-
 
 def out( self, text ):
     """
@@ -170,7 +193,7 @@ def ask_list( self, liste, text = "" , num = True ):
         
     if self.graphic_manager == "base":
         self.show_list( liste, num )
-        return input( f"{ text }" )
+        return ask( f"{ text }" )
 
 
 def change_confirmation( self ):

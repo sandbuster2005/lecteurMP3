@@ -1,5 +1,8 @@
 #made by sand
-
+try :
+    import alsaaudio
+except:
+    pass
 
 def init_sound( self ):
     self.sound_manager = "base"#either base for linux and windows or alsa for linux 
@@ -10,7 +13,6 @@ def init_sound( self ):
         self.audio_linux=False
     else:
         self.audio_linux=True
-    self.start_sound()
     
 def start_sound( self ):
     """

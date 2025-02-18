@@ -6,6 +6,25 @@ from .utils import *
 import libs.vlc as vlc
 import threading
 import platform
+import sys
+
+def up():
+    # My terminal breaks if we don't flush after the escape-code
+    sys.stdout.write('\x1b[1A')
+    sys.stdout.flush()
+
+def down():
+    # I could use '\x1b[1B' here, but newline is faster and easier
+    sys.stdout.write('\n')
+    sys.stdout.flush()
+    
+def save():
+    sys.stdout.write("\x1b[s")
+    sys.stdout.flush()
+    
+def load():
+    sys.stdout.write("\x1b[u")
+    sys.stdout.flush()
 
 
 def init_main( self ):
@@ -55,6 +74,7 @@ def main( self ):
     cette fonction est la fonction d'initialisation du programme et de fonctionnement 
     """
     self.get_param()#get param from file if it exist else create it
+    self.start_sound()
     progress = threading.Thread( target = self.update )#create update thread
     progress.start()
     self.get_img( self.path_to_img,start = 1 )#scan all image in repertory
@@ -99,10 +119,20 @@ def update( self ):
         sleep( 0.5 )
         time = self.player.get_time()#temps actuel
         
-        if self.bar == None and self.song != None:#chanson demarré 
-            Max = self.player.get_length()
-            self.bar = Bar( "time(s)", max=floor( Max/1000 ), fill="■" )
+        if self.song != None:#chanson demarré
+            sleep(0.2)
             
+            if self.bar != None:
+                if self.bar.max != floor( self.player.get_length() / 1000 ):
+                    Max = self.player.get_length()
+                    save()
+                    self.bar = Bar( "time(s)", max=floor( Max/1000 ), fill="■" )
+                    load()
+            else:
+                Max = self.player.get_length()
+                save()
+                self.bar = Bar( "time(s)", max=floor( Max/1000 ), fill="■" )
+                load()
         #print(self.bar,self.search)   
         if self.bar != None and not self.search and not self.pause:#chason en cours et pas de pause/suspension     
             if time/1000 > self.bar.max:#idk really
@@ -116,19 +146,29 @@ def update( self ):
                 
             if time/1000 > self.bar.index:#la chanson a avancer
                 self.bar.index = floor( time/1000 )
+                save()
+                up()
                 self.bar.update()
-            
-            if ceil( time/1000 ) >= self.bar.max : #la chanson est fini
-                if self.bar.index > 1:# la chason est bien fini et ne vien pas de commencer
+                down()
+                load()
+                
+            if time==time0:
+                sleep(2)
+                time = self.player.get_time()
+                
+                if time==time0:
                     if not self.repeat:
                         self.choose_song()
-                    self.play()
-                    
-        if time == time0 and self.song != None and not self.search and not self.pause:
-            if not self.repeat:
-                self.choose_song()
-            self.play()
             
+                    self.play()
+                    print(":")
+            if ceil( time/1000 ) >= self.bar.max : #la chanson est fini# la chason est bien fini et ne vien pas de commencer
+                
+                if not self.repeat:
+                    self.choose_song()
+                    
+                self.play()
+                sys.stdout.write(":")
 def get_input( self ):
     """
     cette fonction est le menu principal qui permet a l'utilisateur d'interagir avec le programme
@@ -195,11 +235,14 @@ def wind( self , mode ):
     le volume du son est compris entre 0 et 100%
     """
     if mode == 1:
-        self.player.set_time( self.player.get_time() + 10000 )
-    
+        if self.bar	!=	None: 
+            self.player.set_time( min( self.player.get_length()-1000, self.player.get_time() + 10000 ) )
+            self.bar.index = min( self.bar.max-1, self.bar.index + 10 )
+        
     if mode == 2:
-        self.player.set_time( int( self.player.get_time() - 10000 ) )
-        self.bar.index = max( 0, self.bar.index - 10 )
+        if self.bar != None:
+            self.player.set_time( max( 0, self.player.get_time() - 10000 ) )
+            self.bar.index = max( 0, self.bar.index - 10 )
     
     if mode == 3:
         self.volume = min( 100, self.volume + 5 )
