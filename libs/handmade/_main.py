@@ -76,6 +76,8 @@ def main( self ):
     self.get_param()#get param from file if it exist else create it
     self.start_sound()
     progress = threading.Thread( target = self.update )#create update thread
+    time = threading.Thread( target = self.check_time )
+    time.start()
     progress.start()
     self.get_img( self.path_to_img,start = 1 )#scan all image in repertory
     self.check_adress()#see if current file adress exist
@@ -106,34 +108,32 @@ def update( self ):
     """
     cette fonction afiche la bar de progression et la mettre a jour ainsi que
     passer a la chason suivant a la fin de l'actuel 
-    """
-    time0 = self.player.get_time()#temps initial
-    
+    """ 
     while self.stay:
+        time = self.player.get_time()#temps actuel
+        
         if not self.MainThread.is_alive():
             self.stay = False
             self.player.stop()#end
             self.write_param()#sauvegarde es parametre
             
-        time0 = self.player.get_time()# temps actuel
-        sleep( 0.5 )
-        time = self.player.get_time()#temps actuel
-        
         if self.song != None:#chanson demarré
-            sleep(0.2)
+            sleep(0.1)
             
             if self.bar != None:
                 if self.bar.max != floor( self.player.get_length() / 1000 ):
                     Max = self.player.get_length()
+                    down()
                     save()
                     self.bar = Bar( "time(s)", max=floor( Max/1000 ), fill="■" )
                     load()
             else:
                 Max = self.player.get_length()
+                down()
                 save()
                 self.bar = Bar( "time(s)", max=floor( Max/1000 ), fill="■" )
                 load()
-        #print(self.bar,self.search)   
+                
         if self.bar != None and not self.search and not self.pause:#chason en cours et pas de pause/suspension     
             if time/1000 > self.bar.max:#idk really
                 continue
@@ -152,16 +152,6 @@ def update( self ):
                 down()
                 load()
                 
-            if time==time0:
-                sleep(2)
-                time = self.player.get_time()
-                
-                if time==time0:
-                    if not self.repeat:
-                        self.choose_song()
-            
-                    self.play()
-                    print(":")
             if ceil( time/1000 ) >= self.bar.max : #la chanson est fini# la chason est bien fini et ne vien pas de commencer
                 
                 if not self.repeat:
@@ -169,6 +159,27 @@ def update( self ):
                     
                 self.play()
                 sys.stdout.write(":")
+                sys.stdout.flush()
+                
+def check_time(self):
+    while self.MainThread.is_alive():
+        if self.song!=None and not self.search and not self.pause:
+            time0 = self.player.get_time()# temps actuel
+            sleep( 0.5 )
+            time = self.player.get_time()#temps actuel
+            
+            if time==time0:
+                sleep(5)
+                time = self.player.get_time()
+                
+                if time==time0:
+                    if not self.repeat:
+                        self.choose_song()
+            
+                    self.play()
+                    sys.stdout.write(":")
+                    sys.stdout.flush()
+
 def get_input( self ):
     """
     cette fonction est le menu principal qui permet a l'utilisateur d'interagir avec le programme
