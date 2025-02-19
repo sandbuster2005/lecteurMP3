@@ -176,7 +176,6 @@ def display( self ):
     limite:
     il est nécessaire qu'une chanson soit selectionné
     """
-    save()
     lup()
     if self.song != None:
         a = "/"
@@ -201,7 +200,7 @@ def display( self ):
         if self.sound_manager != "base":
             print( f"volume :{self.volume}" )
     ldown()
-    load()
+    #load()
     
     
     
