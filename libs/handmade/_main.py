@@ -32,24 +32,21 @@ def main( self ):
     """
     self.get_param()#get param from file if it exist else create it
     self.start_sound()
-    progress = threading.Thread( target = self.update )#create update thread
-    time = threading.Thread( target = self.check_time )
-    time.start()
-    progress.start()
     self.get_img( self.path_to_img,start = 1 )#scan all image in repertory
     self.check_adress()#see if current file adress exist
     self.load_songs()#try to load the song
-    
     while len( self.files ) == 0:# if folder is empty
         self.out( "no song in folder" )
         self.change_main_path()
         self.load_songs()
-        
-    if self.battery_exist:#your not dumb are you ?
-        self.get_battery_life()#init
 
     if self.sound_manager != "base":#base sound manager need a media playing to get voulme
         self.display()
+        
+    progress = threading.Thread( target = self.update )#create update thread
+    time = threading.Thread( target = self.check_time )
+    time.start()
+    progress.start()
     
     while self.stay != False:
         self.get_input()#interface
@@ -65,10 +62,12 @@ def update( self ):
     """
     cette fonction afiche la bar de progression et la mettre a jour ainsi que
     passer a la chason suivant a la fin de l'actuel 
-    """ 
+    """
+    time_changed = False
+    volume_changed = False
+    base_time=strftime( '%H %M' ).split( " " )
     while self.stay:
         time = self.player.get_time()#temps actuel
-        
         if not self.MainThread.is_alive():
             self.stay = False
             self.player.stop()#end
@@ -90,7 +89,15 @@ def update( self ):
                 save()
                 self.bar = Bar( "time(s)", max=floor( Max/1000 ), fill="■" )
                 load()
-                
+        
+        if base_time != strftime( '%H %M' ).split( " " ):
+            base_time = strftime( '%H %M' ).split( " " )
+            time_changed = True  
+        
+        if self.volume != self.get_volume():
+            self.volume = self.get_volume()
+            volume_changed = True
+         
         if self.bar != None and not self.search :#chason en cours et pas de pause/suspension     
             if time/1000 > self.bar.max:#idk really
                 continue
@@ -106,10 +113,26 @@ def update( self ):
                 save()
                 up()
                 self.bar.update()
-                lup(2)
-                out( f"{ strftime( "%H %M" ).split( " " )[ 0 ] }:{strftime( "%H %M" ).split( " " )[ 1 ]}" )
-               #f"{ time[ 0 ] }:{ time[ 1 ] }
                 load()
+                
+            if time_changed:
+                time_changed=False
+                save()
+                lup(3)
+                out( f"{ base_time[ 0 ] }:{base_time[ 1 ]}" )
+                load()
+                
+            if volume_changed:
+                volume_changed=False
+                save()
+                lup(3)
+                right(16)
+                if self.volume < 10 :
+                    out( f"0{ self.volume }%" )
+                else:
+                    out( f"{ self.volume }%" )
+                load()
+               #f"{ time[ 0 ] }:{ time[ 1 ] }
                 
             if ceil( time/1000 ) >= self.bar.max : #la chanson est fini# la chason est bien fini et ne vien pas de commencer
                 
@@ -157,17 +180,10 @@ def display( self ):
         sleep( 0.10 )
         white()
         time=strftime( "%H %M" ).split( " " )# affiche l'heure au format standard
-        self.volume = self.get_volume()
-        
         if self.show:
             self.display_img()
             
-        if self.battery_exist:
-            self.get_battery_life()
-            print( f"{ time[ 0 ] }:{ time[ 1 ] }  batterie : { self.get_battery() } %  { self.battery_life } h    volume: { self.volume }% " )# heure,batterie,temps restant,volume
-            
-        else:
-            print( f"{ time[ 0 ] }:{ time[ 1 ] }   volume: { self.volume }% " )# heure,volume
+        print( f"{ time[ 0 ] }:{ time[ 1 ] }   volume: { self.volume }% " )# heure,volume
             
         print( f"Song: { self.files.index( self.song ) }:{ self.song.rsplit( a, 1 )[ 1 ] }" )# playlist,index,chanson
     

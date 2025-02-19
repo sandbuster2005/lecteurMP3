@@ -45,7 +45,7 @@ def ask_list( self, liste, text = "" , num = True ):
         
     if self.graphic_manager == "base":
         self.show_list( liste, num )
-        return ask( f"{ text }" )
+        return self.ask( f"{ text }" )
 
 
 def change_confirmation( self ):

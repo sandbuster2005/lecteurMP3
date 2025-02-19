@@ -18,10 +18,10 @@ def ldown( x = 1 ):
     out( '\n'*x )
 
 def left( x = 1 ):
-    out( '\x1b[{ x }D' )
+    out( f'\x1b[{ x }D' )
     
 def right( x = 1 ):
-    out( '\x1b[{ x }C' )
+    out( f'\x1b[{ x }C' )
 
 def home():
     out( '\x1b[H' )
