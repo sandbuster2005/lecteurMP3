@@ -24,35 +24,6 @@ def init_main( self ):
     self.player = vlc.MediaPlayer()  # lecteur
     self.played = []  # historique
     self.MainThread = threading.currentThread()
-    self.tooltips = {
-            "h": "pour afficher le menu help",
-            "q": "pour quitter le lecteur",
-            "n": "pour aller a la chanson suivante",
-            "r": "pour rechercher un son dans le catalogue",
-            "l": "pour actualiser l'affichage",
-            "s": "pour changer de mode aleatoire/dans l'ordre",
-            "y": "pour changer le repertoire d'origine",
-            "+": "pour avancer de 10 seconde",
-            "-": "pour reculer de 10 seconde",
-            "p": "pour monter le son de 10%",
-            "m": "pour baisser le son de 10%",
-            "a": "pour recharger le catalogue de chanson et d'image",
-            "b": "pour charger la  chanson précédente",
-            "i": "pour afficher l'historique",
-            "c": "pour activer/desactiver des dossiers",
-            "d": "pour mute/unmute le son",
-            "o": "pour jouer en boucle",
-            "e": "pour changer le message de choix",
-            "g": "changer de gestionnaire de volume",
-            "j": "pour selectionner une image dans la galerie",
-            "t": "pour afficher/cacher les images",
-            "u": "pour sauvegarder les parametre actuel",
-            "dl" :"pour rechercher sur youtube",
-            "x": "pour télécharger une playlist youtube",
-            "v": " pour modifier une commande",
-            "w": "pour remetre les paramètre a 0",
-            "z": "pour supprimer/deplacer/renommer un fichier"
-            }
 
         
 def main( self ):
@@ -148,6 +119,7 @@ def update( self ):
         
         
 def check_time(self):
+    
     while self.MainThread.is_alive():
         if self.song!=None and not self.search and not self.pause:
             time0 = self.player.get_time()# temps actuel

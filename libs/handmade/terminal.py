@@ -11,7 +11,7 @@ def up( x = 1 ):
 def lup( x = 1 ):
     out( f'\x1b[{ x }F' )
     
-def down( x = 1):
+def down( x = 1):#dont work for now it seem
     out ( f'\x1b[{ x }B' )
 
 def ldown( x = 1 ):

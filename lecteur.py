@@ -10,14 +10,16 @@ class App:
         self.init_image()
         self.init_download()
         self.init_song()
+        self.init_display()
         self.init_letter()
     from libs.handmade._external import external_call
+    from libs.handmade._display import init_display,out,ask,ask_list,show_list,change_confirmation
     from libs.handmade._sound import init_sound,start_sound,change_sound_manager,get_volume,set_volume,deafen
     from libs.handmade._batterie import init_battery,battery_check,get_battery,get_battery_life
-    from libs.handmade._command import init_command,sort_command,edit_command         
+    from libs.handmade._command import init_command,sort_command,edit_command,help_menu      
     from libs.handmade._param import init_param,get_param,write_param,reset 
     from libs.handmade._files import init_file,get_file,select_dir,switch_dir,find_file,check_adress,change_main_path,mani_file
-    from libs.handmade._image import init_image,get_img,display_img,select_img,help_menu,out,ask,ask_list,show_list,change_confirmation
+    from libs.handmade._image import init_image,get_img,display_img,select_img
     from libs.handmade._download import init_download,yt_search,dl_yt_playlist  
     from libs.handmade._song import init_song,choose_song,load_songs,play_song,play_last,historic,select,play
     from libs.handmade._main import init_main,main,update,get_input,load_all,wind,check_time,display
