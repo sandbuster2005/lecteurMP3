@@ -2,10 +2,15 @@
 from time import sleep,monotonic
 from libs.progress.bar import Bar
 from math import floor,ceil
+from time import sleep,strftime
 from .utils import *
+from .terminal import *
 import libs.vlc as vlc
 import threading
 import platform
+
+
+
 
 
 def init_main( self ):
@@ -19,35 +24,6 @@ def init_main( self ):
     self.player = vlc.MediaPlayer()  # lecteur
     self.played = []  # historique
     self.MainThread = threading.currentThread()
-    self.tooltips = {
-            "h": "pour afficher le menu help",
-            "q": "pour quitter le lecteur",
-            "n": "pour aller a la chanson suivante",
-            "r": "pour rechercher un son dans le catalogue",
-            "l": "pour actualiser l'affichage",
-            "s": "pour changer de mode aleatoire/dans l'ordre",
-            "y": "pour changer le repertoire d'origine",
-            "+": "pour avancer de 10 seconde",
-            "-": "pour reculer de 10 seconde",
-            "p": "pour monter le son de 10%",
-            "m": "pour baisser le son de 10%",
-            "a": "pour recharger le catalogue de chanson et d'image",
-            "b": "pour charger la  chanson précédente",
-            "i": "pour afficher l'historique",
-            "c": "pour activer/desactiver des dossiers",
-            "d": "pour mute/unmute le son",
-            "o": "pour jouer en boucle",
-            "e": "pour changer le message de choix",
-            "g": "changer de gestionnaire de volume",
-            "j": "pour selectionner une image dans la galerie",
-            "t": "pour afficher/cacher les images",
-            "u": "pour sauvegarder les parametre actuel",
-            "dl" :"pour rechercher sur youtube",
-            "x": "pour télécharger une playlist youtube",
-            "v": " pour modifier une commande",
-            "w": "pour remetre les paramètre a 0",
-            "z": "pour supprimer/deplacer/renommer un fichier"
-            }
 
         
 def main( self ):
@@ -55,23 +31,22 @@ def main( self ):
     cette fonction est la fonction d'initialisation du programme et de fonctionnement 
     """
     self.get_param()#get param from file if it exist else create it
-    self.start_sound()#launch sound manager
-    progress = threading.Thread( target = self.update )#create update thread
-    progress.start()
+    self.start_sound()
     self.get_img( self.path_to_img,start = 1 )#scan all image in repertory
     self.check_adress()#see if current file adress exist
     self.load_songs()#try to load the song
-    
     while len( self.files ) == 0:# if folder is empty
         self.out( "no song in folder" )
         self.change_main_path()
         self.load_songs()
-        
-    if self.battery_exist:#your not dumb are you ?
-        self.get_battery_life()#init
 
     if self.sound_manager != "base":#base sound manager need a media playing to get voulme
         self.display()
+        
+    progress = threading.Thread( target = self.update )#create update thread
+    time = threading.Thread( target = self.check_time )
+    time.start()
+    progress.start()
     
     while self.stay != False:
         self.get_input()#interface
@@ -88,24 +63,42 @@ def update( self ):
     cette fonction afiche la bar de progression et la mettre a jour ainsi que
     passer a la chason suivant a la fin de l'actuel 
     """
-    time0 = self.player.get_time()#temps initial
-    
+    time_changed = False
+    volume_changed = False
+    base_time=strftime( '%H %M' ).split( " " )
     while self.stay:
+        time = self.player.get_time()#temps actuel
         if not self.MainThread.is_alive():
             self.stay = False
             self.player.stop()#end
             self.write_param()#sauvegarde es parametre
             
-        time0 = self.player.get_time()# temps actuel
-        sleep( 0.5 )
-        time = self.player.get_time()#temps actuel
-        
-        if self.bar == None and self.song != None:#chanson demarré 
-            Max = self.player.get_length()
-            self.bar = Bar( "time(s)", max=floor( Max/1000 ), fill="■" )
+        if self.song != None:#chanson demarré
+            sleep(0.1)
             
-        #print(self.bar,self.search)   
-        if self.bar != None and not self.search and not self.pause:#chason en cours et pas de pause/suspension     
+            if self.bar != None:
+                if self.bar.max != floor( self.player.get_length() / 1000 ):
+                    Max = self.player.get_length()
+                    down()
+                    save()
+                    self.bar = Bar( "time(s)", max=floor( Max/1000 ), fill="■" )
+                    load()
+            else:
+                Max = self.player.get_length()
+                down()
+                save()
+                self.bar = Bar( "time(s)", max=floor( Max/1000 ), fill="■" )
+                load()
+        
+        if base_time != strftime( '%H %M' ).split( " " ):
+            base_time = strftime( '%H %M' ).split( " " )
+            time_changed = True  
+        
+        if self.volume != self.get_volume():
+            self.volume = self.get_volume()
+            volume_changed = True
+         
+        if self.bar != None and not self.search :#chason en cours et pas de pause/suspension     
             if time/1000 > self.bar.max:#idk really
                 continue
             
@@ -117,19 +110,92 @@ def update( self ):
                 
             if time/1000 > self.bar.index:#la chanson a avancer
                 self.bar.index = floor( time/1000 )
+                save()
+                up()
                 self.bar.update()
+                load()
+                
+            if time_changed:
+                time_changed=False
+                save()
+                lup(3)
+                out( f"{ base_time[ 0 ] }:{base_time[ 1 ]}" )
+                load()
+                
+            if volume_changed:
+                volume_changed=False
+                save()
+                lup(3)
+                right(16)
+                if self.volume < 10 :
+                    out( f"0{ self.volume }%" )
+                else:
+                    out( f"{ self.volume }%" )
+                load()
+               #f"{ time[ 0 ] }:{ time[ 1 ] }
+                
+            if ceil( time/1000 ) >= self.bar.max : #la chanson est fini# la chason est bien fini et ne vien pas de commencer
+                
+                if not self.repeat:
+                    self.choose_song()
+                    
+                self.play()
+                sys.stdout.write(":")
+                sys.stdout.flush()
+        
+        
+def check_time(self):
+    
+    while self.MainThread.is_alive():
+        if self.song != None :
+            time0 = self.player.get_time()# temps actuel
+            sleep( 0.5 )
+            time = self.player.get_time()#temps actuel
             
-            if ceil( time/1000 ) >= self.bar.max : #la chanson est fini
-                if self.bar.index > 1:# la chason est bien fini et ne vien pas de commencer
+            if time == time0:
+                sleep(5)
+                time = self.player.get_time()
+                
+                if time == time0 and not self.search and not self.pause:
                     if not self.repeat:
                         self.choose_song()
-                    self.play()
-                    
-        if time == time0 and self.song != None and not self.search and not self.pause:
-            if not self.repeat:
-                self.choose_song()
-            self.play()
             
+                    self.play()
+                    lup(0)
+                    sys.stdout.write(":")
+                    sys.stdout.flush()
+
+
+def display( self ):
+    """
+    cette fonction affiche l'image ,recupére la durée de la chanson ainsi que le nom de la chanson en cours,
+    le volume de la musique ainsi que creer la bar de progression si besoin
+    
+    limite:
+    il est nécessaire qu'une chanson soit selectionné
+    """
+    lup()
+    if self.song != None:
+        a = "/"
+        sleep( 0.10 )
+        white()
+        time=strftime( "%H %M" ).split( " " )# affiche l'heure au format standard
+        if self.show:
+            self.display_img()
+            
+        print( f"{ time[ 0 ] }:{ time[ 1 ] }   volume: { self.volume }% " )# heure,volume
+            
+        print( f"Song: { self.files.index( self.song ) }:{ self.song.rsplit( a, 1 )[ 1 ] }" )# playlist,index,chanson
+    
+    else:
+        if self.sound_manager != "base":
+            print( f"volume :{self.volume}" )
+    ldown()
+    #load()
+    
+    
+    
+    
 def get_input( self ):
     """
     cette fonction est le menu principal qui permet a l'utilisateur d'interagir avec le programme
@@ -145,7 +211,7 @@ def get_input( self ):
     if self.search:#recherche terminé
         self.search = False
         
-    elif got == "" and self.song != None:#pause 
+    if got == "" and self.song != None:#pause 
         self.wind( 6 )
         
     x = 0
@@ -196,11 +262,14 @@ def wind( self , mode ):
     le volume du son est compris entre 0 et 100%
     """
     if mode == 1:
-        self.player.set_time( self.player.get_time() + 10000 )
-    
+        if self.bar	!=	None: 
+            self.player.set_time( min( self.player.get_length()-1000, self.player.get_time() + 10000 ) )
+            self.bar.index = min( self.bar.max-1, self.bar.index + 10 )
+        
     if mode == 2:
-        self.player.set_time( int( self.player.get_time() - 10000 ) )
-        self.bar.index = max( 0, self.bar.index - 10 )
+        if self.bar != None:
+            self.player.set_time( max( 0, self.player.get_time() - 10000 ) )
+            self.bar.index = max( 0, self.bar.index - 10 )
     
     if mode == 3:
         self.volume = min( 100, self.volume + 5 )

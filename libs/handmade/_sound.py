@@ -4,11 +4,15 @@ try :
 except:
     pass
 
-
 def init_sound( self ):
     self.sound_manager = "base"#either base for linux and windows or alsa for linux 
     self.mute = 0
-    
+    try :
+        import alsaaudio
+    except:
+        self.audio_linux=False
+    else:
+        self.audio_linux=True
     
 def start_sound( self ):
     """
@@ -31,8 +35,9 @@ def change_sound_manager( self ):
         
     if choice == "1":
         if "linux" in self.sys_os:#si le systeme est compatible
-            self.sound_manager = "alsa"
-            self.start_sound()#start alsa session
+            if self.audio_linux:
+                self.sound_manager = "alsa"
+                self.start_sound()#start alsa session
     
     
 def get_volume( self ):

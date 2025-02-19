@@ -3,8 +3,8 @@ from os import listdir
 from os.path import isdir,isfile
 from random import randint
 from .utils import *
-from time import sleep,strftime
 
+    
 def init_image( self ):
     
     if "64" in self.sys_architecture:
@@ -17,8 +17,7 @@ def init_image( self ):
     self.imgs = []# liste des images contenu dans le chemin indiqué ,vide = random
     self.img = ""# image actuel
     self.show = True# affiche ou non l'image selectionné
-    self.graphic_manager="base"
-    self.confirmation="your choice: "
+    
     
 def get_img( self, path, files = [], start = 0 ):
     """
@@ -86,99 +85,4 @@ def select_img( self ):
                     word = ""
             
         self.display()
-        
-        
-def display( self ):
-    """
-    cette fonction affiche l'image ,recupére la durée de la chanson ainsi que le nom de la chanson en cours,
-    le volume de la musique ainsi que creer la bar de progression si besoin
-    
-    limite:
-    il est nécessaire qu'une chanson soit selectionné
-    """
-    if self.song != None:
-        a = "/"
-        sleep( 0.10 )
-        white()
-        time=strftime( "%H %M" ).split( " " )# affiche l'heure au format standard
-        self.volume = self.get_volume()
-        
-        if self.show:
-            self.display_img()
-            
-        if self.battery_exist:
-            self.get_battery_life()
-            print( f"{ time[ 0 ] }:{ time[ 1 ] }  batterie : { self.get_battery() } %  { self.battery_life } h    volume: { self.volume }% " )# heure,batterie,temps restant,volume
-            
-        else:
-            print( f"{ time[ 0 ] }:{ time[ 1 ] }   volume: { self.volume }% " )# heure,volume
-            
-        print( f"Song: { self.files.index( self.song ) }:{ self.song.rsplit( a, 1 )[ 1 ] }" )# playlist,index,chanson
-    
-    else:
-        if self.sound_manager != "base":
-            print( f"volume :{self.volume}" )
-    
-    
-def help_menu( self ):
-    """
-    cette fonction se sert du dico qui contient les info pour renvoier une
-    liste de toute les info
-    """
-    return [ "entrer un nombre pour lancer la chanson correspondante", "ne rien rentrer pour mettre pause/actualiser" ]+[f"{ self.holders[ x ] } : { self.tooltips[ self.commands[ x ] ] }" for x in range( len( self.commands ) ) ]
-
-
-def out( self, text ):
-    """
-    cette fonction permet d'afficher un message text a l'utilisateur
-    """
-    if self.graphic_manager == "base":
-        print( text )
-
-
-def ask( self, text ):
-    """
-    cette fonction permet de demander une valeur a l'utilisateur
-    en lui demandant text
-    """
-    if self.graphic_manager == "base":
-        return input( f"{ text }" )
-
-
-def show_list( self, liste, num = True ):
-    """
-    cette fonction permet d afficher les elements d'une liste un
-    par un ,numeroté ou non
-    """
-    if self.graphic_manager == "base":
-        if num == True:
-            for x in range( len( liste ) ):
-                print( x, liste[x] )
-        
-        else:
-            for x in liste:
-                print( x )
-  
-  
-def ask_list( self, liste, text = "" , num = True ):
-    """
-    cette fonction affiche a l'utilisateur une liste et lui demande
-    une valeur a l'aide d un prompt text
-    """
-    if text == "":
-        text = self.confirmation
-        
-    if self.graphic_manager == "base":
-        self.show_list( liste, num )
-        return input( f"{ text }" )
-
-
-def change_confirmation( self ):
-    """
-    cette fonction permet de changer le prompt par defaut de
-    la fonction ask_list
-    """
-    self.confirmation = self.ask( "new choice prompt" )
-    
-    
-    
+           

@@ -33,7 +33,6 @@ def load_songs( self ):
     """     
     self.files = self.get_file( self.path_to_file, [] )
     self.song = None
-    self.bar = None
 
 
 def play_song( self ):
@@ -53,7 +52,6 @@ def play( self ):
     limite:
     une musique doit étre selectionné au préalable 
     """
-    self.bar = None
     
     if self.played == []:
         self.played.append( self.files.index( self.song ) )# ajoute a l'historique
@@ -73,7 +71,6 @@ def play_last( self ):
     if len(self.played) > 1:
         self.played.pop()
         self.song = self.files[ self.played[ -1 ] ]
-        self.bar = None
         self.play()
         
         
@@ -81,7 +78,7 @@ def historic( self ):
     """
     cette fonction affiche l'historique d'écoute de la session 
     """
-    self.show_list( [ f"{ self.played[ x ] }: { self.files[ self.played [ x ] ].rsplit( "/",1 )[ -1 ] }" for x in range( len( self.played ) ) ], num = False )# index : nom
+    self.show_list( [ f"{ self.played[ x ] }: { self.files[ self.played [ x ] ].rsplit( '/',1 )[ -1 ] }" for x in range( len( self.played ) ) ], num = False )# index : nom
         
 
 def select( self ):
@@ -96,7 +93,6 @@ def select( self ):
     INPUT = self.ask( "rechercher dans la liste de chanson :" )
     result = self.find_file( str( INPUT ) )#recherche dans les fichiers
     
-    for x in range( len( result ) ):
-        self.show_list( [ f"{ result[ x ][ 1 ] } :{ result[ x ][ 0 ] }" for x in range( len( result ) ) ] )
+    self.show_list( [ f"{ result[ x ][ 1 ] } :{ result[ x ][ 0 ] }" for x in range( len( result ) ) ], num = False )
         
     self.get_input()
