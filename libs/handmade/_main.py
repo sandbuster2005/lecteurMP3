@@ -91,7 +91,7 @@ def update( self ):
                 self.bar = Bar( "time(s)", max=floor( Max/1000 ), fill="■" )
                 load()
                 
-        if self.bar != None and not self.search and not self.pause:#chason en cours et pas de pause/suspension     
+        if self.bar != None and not self.search :#chason en cours et pas de pause/suspension     
             if time/1000 > self.bar.max:#idk really
                 continue
             
@@ -106,6 +106,9 @@ def update( self ):
                 save()
                 up()
                 self.bar.update()
+                lup(2)
+                out( f"{ strftime( "%H %M" ).split( " " )[ 0 ] }:{strftime( "%H %M" ).split( " " )[ 1 ]}" )
+               #f"{ time[ 0 ] }:{ time[ 1 ] }
                 load()
                 
             if ceil( time/1000 ) >= self.bar.max : #la chanson est fini# la chason est bien fini et ne vien pas de commencer
@@ -121,16 +124,16 @@ def update( self ):
 def check_time(self):
     
     while self.MainThread.is_alive():
-        if self.song!=None and not self.search and not self.pause:
+        if self.song != None :
             time0 = self.player.get_time()# temps actuel
             sleep( 0.5 )
             time = self.player.get_time()#temps actuel
             
-            if time==time0:
+            if time == time0:
                 sleep(5)
                 time = self.player.get_time()
                 
-                if time==time0:
+                if time == time0 and not self.search and not self.pause:
                     if not self.repeat:
                         self.choose_song()
             
@@ -192,7 +195,7 @@ def get_input( self ):
     if self.search:#recherche terminé
         self.search = False
         
-    elif got == "" and self.song != None:#pause 
+    if got == "" and self.song != None:#pause 
         self.wind( 6 )
         
     x = 0
