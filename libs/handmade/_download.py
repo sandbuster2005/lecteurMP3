@@ -23,7 +23,7 @@ def yt_search( self ):
     word = self.ask_list( [ results[ x ].get( "title" ) for x in range ( len( results ) ) ])
     
     if all_numbers( word, 10, 1 ):
-        title = replace( results[ int( word ) ].get( "title" ), [ "(", "'", '"', ")", " ", ":", "|", "&"] )#formatage pour eviter les crash
+        title = replace( results[ int( word ) ].get( "title" ), [ "(", "'", '"', ")", " ", ":", "|", "&"] , "_")#formatage pour eviter les crash
         link = "https://www.youtube.com" + results[ int( word ) ].get( "url_suffix" )
         print( link ) 
         self.external_call( [ f"./yt-dlp -x --audio-format mp3 -o { self.path_to_file }download/{ title } { link } " ], shell = True )# telechargement en externe en .mp3

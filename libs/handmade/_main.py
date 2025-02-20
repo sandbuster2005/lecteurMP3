@@ -10,9 +10,6 @@ import threading
 import platform
 
 
-
-
-
 def init_main( self ):
     self.sys_os = platform.system().lower()
     self.sys_architecture = platform.machine()
@@ -25,22 +22,24 @@ def init_main( self ):
     self.played = []  # historique
     self.MainThread = threading.currentThread()
     self.timer = None
-        
+   
+   
 def main( self ):
     """
     cette fonction est la fonction d'initialisation du programme et de fonctionnement 
     """
     self.get_param()#get param from file if it exist else create it
-    self.start_sound()
     self.get_img( self.path_to_img,start = 1 )#scan all image in repertory
     self.check_adress()#see if current file adress exist
     self.load_songs()#try to load the song
+    
     while len( self.files ) == 0:# if folder is empty
         self.out( "no song in folder" )
         self.change_main_path()
         self.load_songs()
 
     if self.sound_manager != "base":#base sound manager need a media playing to get voulme
+        self.start_sound()
         self.display()
         
     progress = threading.Thread( target = self.update )#create update thread
@@ -65,6 +64,8 @@ def update( self ):
     """
     time_changed = False
     volume_changed = False
+    timer_changed = False
+    timer = None
     base_time=strftime( '%H %M' ).split( " " )
     while self.stay:
         time = self.player.get_time()#temps actuel
@@ -102,11 +103,15 @@ def update( self ):
             
             if self.timer != None:
                 self.timer -= 1
-            
         
-        if self.volume != self.get_volume():
-            self.volume = self.get_volume()
-            volume_changed = True
+        if self.timer != timer:
+            timer = self.timer
+            timer_changed = True
+            
+        if self.sound_manager == "alsa":
+            if self.volume != self.get_volume():
+                self.volume = self.get_volume()
+                volume_changed = True
          
         if self.bar != None and not self.search :#chason en cours et pas de pause/suspension     
             if time/1000 > self.bar.max:#idk really
@@ -126,23 +131,33 @@ def update( self ):
                 load()
                 
             if time_changed:
-                time_changed=False
+                time_changed = False
                 save()
-                lup(3)
+                lup( 3 )
                 out( f"{ base_time[ 0 ] }:{base_time[ 1 ]}" )
+                load()
+            
+            if timer_changed:
+                timer_changed = False
+                save()
+                lup( 3 )
+                right( 20 )
+                out(f" timer :{ self.timer } mins ")
                 load()
                 
             if volume_changed:
-                volume_changed=False
+                volume_changed = False
                 save()
-                lup(3)
-                right(16)
+                lup( 3 )
+                right( 16 )
+                
                 if self.volume < 10 :
                     out( f"0{ self.volume }%" )
+                    
                 else:
                     out( f"{ self.volume }%" )
+                    
                 load()
-               #f"{ time[ 0 ] }:{ time[ 1 ] }
                 
             if ceil( time/1000 ) >= self.bar.max : #la chanson est fini# la chason est bien fini et ne vien pas de commencer
                 
@@ -189,11 +204,13 @@ def display( self ):
         a = "/"
         sleep( 0.10 )
         white()
+        self.volume = self.get_volume()
+        
         time=strftime( "%H %M" ).split( " " )# affiche l'heure au format standard
         if self.show:
             self.display_img()
             
-        print( f"{ time[ 0 ] }:{ time[ 1 ] }   volume: { self.volume }% " )# heure,volume
+        print( f"{ time[ 0 ] }:{ time[ 1 ] }   volume: { self.volume }%  " )# heure,volume
             
         print( f"Song: { self.files.index( self.song ) }:{ self.song.rsplit( a, 1 )[ 1 ] }" )# playlist,index,chanson
     
@@ -309,7 +326,7 @@ def wind( self , mode ):
         self.suspend( "display" )
         
 def set_timer( self ):
-    out("enter nothing to delete current timer")
+    self.out("enter nothing to delete current timer")
     choice = self.ask( "shutdown in  x minutes :" )
     
     if all_numbers( choice ):

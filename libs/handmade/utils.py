@@ -2,8 +2,8 @@
 def white(x:int=40):
     for z in range(x):print("")
 
-def replace(word:str,chrs:list):
-    return "".join([word[x]*(1-(word[x] in chrs)) for x in range(len(word))])
+def replace(word:str,chrs:list,new:str="") -> str:
+    return "".join([word[x]*(1-(word[x] in chrs))+ new*(word[x] in chrs) for x in range(len(word))])
 
 def all_numbers(word,lim=0,mode=0):
     return all(test in "0123456789" for test in word)==(word!="")==True==(int("".join([str(max(0,int(ord(word[x])-48))) for x in range(len(word))]))*lim<lim*lim-mode+1)

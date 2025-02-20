@@ -79,7 +79,7 @@ def historic( self ):
     cette fonction affiche l'historique d'écoute de la session 
     """
     self.show_list( [ f"{ self.played[ x ] }: { self.files[ self.played [ x ] ].rsplit( '/',1 )[ -1 ] }" for x in range( len( self.played ) ) ], num = False )# index : nom
-        
+    self.display()   
 
 def select( self ):
     """
