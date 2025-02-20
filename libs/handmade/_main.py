@@ -333,6 +333,6 @@ def set_timer( self ):
         self.timer = int( choice )
         
     else:
-        self.timer = choice
+        self.timer = None 
         
     self.display()

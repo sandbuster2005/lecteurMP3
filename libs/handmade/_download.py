@@ -1,7 +1,7 @@
 #made by sand
 from libs.youtube_search import YoutubeSearch
 from .utils import *
-
+from os import listdir
 
 def init_download( self ):
     pass
@@ -39,12 +39,12 @@ def dl_yt_playlist( self ):
     new_lenght=0
     if all_numbers( lenght ):
         lenght = int( lenght )
-        for f in listdir( "{ self.path_to_file }/download" ):
+        for f in listdir( f"{ self.path_to_file }/download" ):
             lenght += 1
             
         self.external_call( [ f"./yt-dlp -x --audio-format mp3 -P /{ self.path_to_file }download/ { playlist } " ], shell = True ) # telechargement chanson / playlist en .mp3
         
-        for f in listdir( "{ self.path_to_file }/download" ):
+        for f in listdir( f"{ self.path_to_file }/download" ):
             new_lenght += 1
         
         if new_lenght!=lenght:
