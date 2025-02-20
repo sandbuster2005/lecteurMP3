@@ -126,6 +126,6 @@ def mani_file(self):
                 choice = self.ask( "new_name :" )
                 mv_file( self.song, self.song.rsplit( "/",1 )[ 0 ] + choice + "." + self.song.rsplit( ".",1 )[ 1 ])
                 
-            self.files=self.load_songs()
+            self.load_songs()
             
             
