@@ -100,6 +100,7 @@ def change_main_path( self ):
     """
     self.path_to_file = ""
     self.check_adress()
+    self.load_songs()
      
      
 def mani_file(self):

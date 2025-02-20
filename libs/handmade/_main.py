@@ -24,7 +24,7 @@ def init_main( self ):
     self.player = vlc.MediaPlayer()  # lecteur
     self.played = []  # historique
     self.MainThread = threading.currentThread()
-
+    self.timer = None
         
 def main( self ):
     """
@@ -73,6 +73,12 @@ def update( self ):
             self.player.stop()#end
             self.write_param()#sauvegarde es parametre
             
+        if self.timer != None:
+            if self.timer < 1:
+                self.stay = False
+                self.player.stop()#end
+                self.write_param()
+         
         if self.song != None:#chanson demarré
             sleep(0.1)
             
@@ -92,7 +98,11 @@ def update( self ):
         
         if base_time != strftime( '%H %M' ).split( " " ):
             base_time = strftime( '%H %M' ).split( " " )
-            time_changed = True  
+            time_changed = True
+            
+            if self.timer != None:
+                self.timer -= 1
+            
         
         if self.volume != self.get_volume():
             self.volume = self.get_volume()
@@ -146,7 +156,7 @@ def update( self ):
         
 def check_time(self):
     
-    while self.MainThread.is_alive():
+    while self.MainThread.is_alive() and self.stay :
         if self.song != None :
             time0 = self.player.get_time()# temps actuel
             sleep( 0.5 )
@@ -297,3 +307,15 @@ def wind( self , mode ):
     
     if mode > 0:
         self.suspend( "display" )
+        
+def set_timer( self ):
+    out("enter nothing to delete current timer")
+    choice = self.ask( "shutdown in  x minutes :" )
+    
+    if all_numbers( choice ):
+        self.timer = int( choice )
+        
+    else:
+        self.timer = choice
+        
+    self.display()

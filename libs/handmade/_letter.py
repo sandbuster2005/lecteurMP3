@@ -40,6 +40,9 @@ def n_f( self ):
 def e_f( self ):
     self.change_confirmation()
     
+def f_f( self ):
+    self.suspend( "set_timer" )
+
 def plus_f( self ):
     self.wind( 1 )
 
