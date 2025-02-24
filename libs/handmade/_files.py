@@ -1,7 +1,8 @@
 #made by sand
 from os import listdir
 from os.path import isdir,isfile
-from .ffiles import*
+from .ffiles import *
+from .ffiles import get_file as getfile
 from .utils import *
 
 
@@ -38,7 +39,7 @@ def get_file( self, path, files = [] ):
                 files += self.get_file( path + f + "/", [] )
                 self.dirs.append( [ path + f, '1' ] )
                 
-        if f[ -4: ] == ".mp3"  or f[ -4: ] == ".m4a" or f[ -4: ] == ".wav":#le fichier est un audio
+        if f[ -4: ] == ".mp3"  or f[ -4: ] == ".m4a" or f[ -4: ] == ".wav" or f[ -5: ] == ".flac":#le fichier est un audio
             files.append( path + "/" + f )
             
     return files
@@ -129,4 +130,26 @@ def mani_file(self):
                 
             self.load_songs()
             
+def get_words(self):
+    self.words = []
+    if self.song != None :
+        file = self.song.rsplit( ".", 1 )[ 0 ] + ".lrc"
+        print( isfile( file ) )
+        if isfile( file ):
+            data = getfile( file )
+            data = data.split("[" )
+            data = data[1:]
             
+            for x in range(len(data)):
+                data[x] = replace(data[x],'\n').split("]",1)
+            
+            new_data = []
+            for x in range(len(data)):
+                if  ":" in data[x][0] and  '.' in data[x][0] and len(data[x][0]) == 8:
+                    new_data.append(data[x])
+                    
+            data = new_data
+            for x in range(len(data)):        
+                data[x][0] = int(data[x][0][:2]) * 60 + int(data[x][0][3:5]) + int(data[x][0][6:8]) / 100 
+            
+            self.words = data

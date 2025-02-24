@@ -8,7 +8,7 @@ from .terminal import *
 import libs.vlc as vlc
 import threading
 import platform
-
+import os 
 
 def init_main( self ):
     self.sys_os = platform.system().lower()
@@ -22,7 +22,8 @@ def init_main( self ):
     self.played = []  # historique
     self.MainThread = threading.currentThread()
     self.timer = None
-   
+    self.word = True 
+    self.words = None
    
 def main( self ):
     """
@@ -67,6 +68,8 @@ def update( self ):
     timer_changed = False
     timer = None
     base_time=strftime( '%H %M' ).split( " " )
+    stopped = False
+    
     while self.stay:
         time = self.player.get_time()#temps actuel
         if not self.MainThread.is_alive():
@@ -130,6 +133,17 @@ def update( self ):
                 self.bar.update()
                 load()
                 
+            if self.word:
+                if self.words != []:
+                    if self.words[0][0] < time/1000 and self.words[0][0]:
+                        save()
+                        lup( 4 )
+                        wipe_line()
+                        out( self.words[0][1] )
+                        load()
+                        self.words.remove(self.words[0])
+                
+                
             if time_changed:
                 time_changed = False
                 save()
@@ -164,6 +178,8 @@ def update( self ):
                 if not self.repeat:
                     self.choose_song()
                     
+                self.bar = None
+                self.get_words()
                 self.play()
                 sys.stdout.write(":")
                 sys.stdout.flush()
@@ -213,7 +229,6 @@ def display( self ):
         print( f"{ time[ 0 ] }:{ time[ 1 ] }   volume: { self.volume }%  " )# heure,volume
             
         print( f"Song: { self.files.index( self.song ) }:{ self.song.rsplit( a, 1 )[ 1 ] }" )# playlist,index,chanson
-    
     else:
         if self.sound_manager != "base":
             print( f"volume :{self.volume}" )
@@ -232,7 +247,9 @@ def get_input( self ):
     if all_numbers( got, len( self.files ), 1 ):#chanson selectionné
             white()
             self.search = False
+            self.bar = None
             self.song = self.files[ int(got) ]
+            self.get_words()
             self.play()
             
     if self.search:#recherche terminé

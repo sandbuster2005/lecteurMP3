@@ -40,7 +40,9 @@ def play_song( self ):
     cette fonction lance le choix de chanson et la joue
     """
     if len( self.files ) != 0:
+        self.bar = None
         self.choose_song()
+        self.get_words()
         self.play()
         self.pause = 0
     

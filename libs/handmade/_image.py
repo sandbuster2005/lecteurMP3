@@ -48,10 +48,10 @@ def display_img( self ):
     """
     if self.img != "":# une image est selectionné
         self.external_call( [ f"{ self.img_command } { self.img }" ], True )# image selectionné
-        
+        print("")
     if self.img == "" and self.imgs != []:# il y a au moins une image et aucune selcetionné
         self.external_call( [ f"{ self.img_command } { self.imgs[ randint( 0, len( self.imgs ) - 1) ] }" ], True )# image aléatoire
-   
+        print("")
    
 def select_img( self ):
     """
