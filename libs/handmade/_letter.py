@@ -64,16 +64,16 @@ def d_f( self ):
   
   
 def t_f( self ):
-    self.wind( 7 )
+    pass
  
  
 def o_f( self ):
-    self.wind( 8 )
+    pass
 
 
 def s_f( self ):
-    self.wind( 9 )
-
+    self.suspend( "param_center" )
+    self.suspend( "display" )
 
 def a_f( self ):
     self.load_all()

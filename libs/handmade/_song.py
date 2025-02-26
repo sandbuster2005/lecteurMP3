@@ -15,10 +15,10 @@ def choose_song( self ):
     choisir une chanson aléatoire : mode 0
     choisit la chanson qui suit dans la liste : mode 1 
     """
-    if self.mode == 0:
+    if self.mode == 1:
         self.song = self.files[ randint( 0, len( self.files ) - 1 ) ]#chanson aleatoire
         
-    if self.mode == 1:
+    if self.mode == 0:
         if self.song == None:
             self.song = self.files[ 0 ]# si pas de chanson joué avant prendre la premiére
             

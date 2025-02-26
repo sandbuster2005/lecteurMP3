@@ -16,7 +16,7 @@ def init_image( self ):
     self.path_to_img = "appdata/image/"# chemin du dosier image
     self.imgs = []# liste des images contenu dans le chemin indiqué ,vide = random
     self.img = ""# image actuel
-    self.show = True# affiche ou non l'image selectionné
+    self.show = 1# affiche ou non l'image selectionné
     
     
 def get_img( self, path, files = [], start = 0 ):

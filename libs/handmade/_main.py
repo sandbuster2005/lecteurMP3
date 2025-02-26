@@ -22,7 +22,7 @@ def init_main( self ):
     self.played = []  # historique
     self.MainThread = threading.currentThread()
     self.timer = None
-    self.word = True 
+    self.word = 1
     self.words = None
    
 def main( self ):
@@ -288,7 +288,7 @@ def load_all( self ):
     self.get_img( self.path_to_img, start = 1 )
     
     
-def wind( self , mode ):
+def wind( self, mode, pause = True  ):
     """
     cette fonction permet de:
     avancer de 10 seconde : mode 1
@@ -339,7 +339,9 @@ def wind( self , mode ):
     if mode == 9:
         self.mode = 1 - self.mode
     
-    if mode > 0:
+    if mode == 10:
+        self.word = 1 - self.word
+    if pause:
         self.suspend( "display" )
         
 def set_timer( self ):
@@ -353,3 +355,16 @@ def set_timer( self ):
         self.timer = None 
         
     self.display()
+
+def param_center( self ):
+    word = "0"
+    while all_numbers( word ):
+        white()
+        tooltip=[[ "afficher l'image ", self.show ],
+                 [ "jouer en boucle ", self.repeat ],
+                 [ "jouer en random ", self.mode ],
+                 [ "afficher les fichier paroles", self.word ]
+                ]
+        word = self.ask_list( tooltip )
+        if all_numbers( word , len (tooltip ), 1 ):
+                self.wind( 7 + int( word ), pause = False )

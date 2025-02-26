@@ -12,7 +12,7 @@ def init_command( self ):
             "n": "pour aller a la chanson suivante",
             "r": "pour rechercher un son dans le catalogue",
             "l": "pour actualiser l'affichage",
-            "s": "pour changer de mode aleatoire/dans l'ordre",
+            "s": "centre parametre",
             "y": "pour changer le repertoire d'origine",
             "+": "pour avancer de 10 seconde",
             "-": "pour reculer de 10 seconde",
