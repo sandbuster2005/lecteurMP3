@@ -39,7 +39,7 @@ def get_file( self, path, files = [] ):
                 files += self.get_file( path + f + "/", [] )
                 self.dirs.append( [ path + f, '1' ] )
                 
-        if f[ -4: ] == ".mp3"  or f[ -4: ] == ".m4a" or f[ -4: ] == ".wav" or f[ -5: ] == ".flac":#le fichier est un audio
+        if f[ -4: ] == ".mp3"  or f[ -4: ] == ".m4a" or f[ -4: ] == ".wav" or f[ -5: ] == ".flac" or f[ -4: ] == ".mid":#le fichier est un audio
             files.append( path + "/" + f )
             
     return files
@@ -110,8 +110,8 @@ def mani_file(self):
     et renommer le fichier actuel
     """
     if self.song != None:
-        word = self.ask_list( [ "delete ", "move", "rename"] )
-        if all_numbers( word, 2 ):
+        word = self.ask_list( [ "delete ", "move", "rename", "convert"] )
+        if all_numbers( word, 3 ):
             if int( word ) == 0:
                 choice = self.ask( "are you sure (y/n)" )
                 
@@ -127,6 +127,9 @@ def mani_file(self):
             if int( word ) == 2:
                 choice = self.ask( "new_name :" )
                 mv_file( self.song, self.song.rsplit( "/",1 )[ 0 ] + choice + "." + self.song.rsplit( ".",1 )[ 1 ])
+            
+            if int( word ) == 3:
+                self.change_extension()
                 
             self.load_songs()
             
@@ -153,3 +156,15 @@ def get_words(self):
                 data[x][0] = int(data[x][0][:2]) * 60 + int(data[x][0][3:5]) + int(data[x][0][6:8]) / 100 
             
             self.words = data
+            
+def change_extension(self):
+    white()
+    option = [".mp3", ".m4a", ".wav" , ".flac" ]
+    word = self.ask_list( option )
+    if all_numbers( word, len( option ), 1 ):
+        confirm = self.ask( "delete original (y/n)?" )
+        #if confirm == "y" :
+        new = self.song.rsplit( ".",1 )[ 0 ] + option[ int( word ) ]
+        self.external_call(f"ffmpeg -i '{self.song}' '{new}' " , shell = True)
+        if confirm == "y":
+            rm_file(self.song)

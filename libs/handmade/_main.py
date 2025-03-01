@@ -191,6 +191,8 @@ def update( self ):
                     
                 self.bar = None
                 self.get_words()
+                if self.song[-4:] ==".mid":
+                    self.suspend("convert_midi")
                 self.play()
                 sys.stdout.write(":")
                 sys.stdout.flush()
@@ -261,6 +263,8 @@ def get_input( self ):
             self.bar = None
             self.song = self.files[ int(got) ]
             self.get_words()
+            if self.song[-4:] ==".mid":
+                self.suspend("convert_midi")
             self.play()
             
     if self.search:#recherche terminé
@@ -379,3 +383,6 @@ def param_center( self ):
         word = self.ask_list( tooltip )
         if all_numbers( word , len (tooltip ), 1 ):
                 self.wind( 7 + int( word ), pause = False )
+                
+def manager_manager(self):
+    pass

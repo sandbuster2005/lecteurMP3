@@ -1,13 +1,14 @@
 #made by sand
 from random import randint
 from .utils import *
-
+import libs.midi2audio as midi2audio
+from os import listdir
 
 def init_song( self ):
     #SONG variables
     self.song = None# son aactuelle
     self.mode = 0# 0:aleatoire 1:dans'l'ordre
-        
+    self.base_soundmap = "appdata/midi_codec/default.sf2"   
         
 def choose_song( self ):
     """
@@ -43,6 +44,9 @@ def play_song( self ):
         self.bar = None
         self.choose_song()
         self.get_words()
+        if self.song[-4:] ==".mid":
+            self.suspend("play_midi")
+        print(self.song)
         self.play()
         self.pause = 0
     
@@ -98,3 +102,21 @@ def select( self ):
     self.show_list( [ f"{ result[ x ][ 1 ] } :{ result[ x ][ 0 ] }" for x in range( len( result ) ) ], num = False )
         
     self.get_input()
+
+def play_midi(self):
+    outs = listdir("appdata/midi_codec")
+    word = self.ask_list(outs)
+    if all_numbers( word, len( outs ), 1 ):
+        print("appdata/midi_codec/" + outs[int(word)])
+        self.convert_midi()
+        
+def convert_midi(self,soundmap = ""  , destination = "appdata/cache/midi_cache.wav" ):
+    if soundmap == "":
+        soundmap = self.base_soundmap 
+    fs = midi2audio.FluidSynth(soundmap)
+    song = self.song
+    self.song = destination
+    self.files.append( self.song )
+    fs.midi_to_audio(song ,destination )
+        
+        
