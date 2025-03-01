@@ -64,11 +64,11 @@ def d_f( self ):
   
   
 def t_f( self ):
-    pass
+    self.suspend("screen_mode")
  
  
 def o_f( self ):
-    pass
+    self.suspend("default_midi")
 
 
 def s_f( self ):

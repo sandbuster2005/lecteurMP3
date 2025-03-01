@@ -11,7 +11,7 @@ def get_param( self ):
     et de les charger ,et dans le cas ou le fichier n'existe pas le creer
     """
     data = get_data( self.param, [ "|" , "," , "#" ] )# pour extraire les donné
-    if data == [] or len( data ) != 12:# si les donné sont corrompu ou n'existe pas
+    if data == [] or len( data ) != 13:# si les donné sont corrompu ou n'existe pas
         self.write_param()
         self.help_menu()
         
@@ -28,6 +28,7 @@ def get_param( self ):
         self.confirmation = data[ 9 ][ 0 ][ 0 ]
         self.show = int( data[ 10 ][ 0 ][ 0 ] )
         self.word = int( data[ 11 ][ 0 ][ 0 ] )
+        self.base_soundmap = data[ 12 ][ 0 ][ 0 ] 
         self.sort_command()
     
     
@@ -36,7 +37,7 @@ def write_param( self ):
     cette fonction permet d'ecrire les parametre actuel en memoire
     dans le fichier param
     """
-    data = [ str( self.path_to_file ), str( self.path_to_img ), str( self.mode ), self.sound_manager, str( self.img ), str( self.repeat ), self.dirs, self.holders, self.graphic_manager, self.confirmation, str(self.show), str(self.word) ]# tout les parametre a stocker
+    data = [ str( self.path_to_file ), str( self.path_to_img ), str( self.mode ), self.sound_manager, str( self.img ), str( self.repeat ), self.dirs, self.holders, self.graphic_manager, self.confirmation, str(self.show), str(self.word) , self.base_soundmap ]# tout les parametre a stocker
     data = join_list( data,[ "|", ",", "#" ] )# formatage pour l'ecriture
     write_file( self.param, data )
     self.sort_command()

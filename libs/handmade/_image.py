@@ -50,7 +50,7 @@ def display_img( self ):
     limite:
     les images doit étre dans le dossiers image du programme
     """
-    if self.img_mode == " mg":
+    if self.img_mode == "img":
         if self.img != "":# une image est selectionné
             self.external_call( [ f"{ self.img_command } { self.img }" ], True )# image selectionné
             print("")
@@ -58,8 +58,10 @@ def display_img( self ):
         if self.img == "" and self.imgs != []:# il y a au moins une image et aucune selcetionné
             self.external_call( [ f"{ self.img_command } { self.imgs[ randint( 0, len( self.imgs ) - 1) ] }" ], True )# image aléatoire
             print("")
+            
     if self.img_mode == "script":
         self.Screen.display()
+        
 def select_img( self ):
     """
     cette fonction permet de choisir une image parmit la galerie ou de choisir aléatoire
@@ -98,3 +100,13 @@ def load_script(self):
     if self.img_script != "":
         self.Screen = importlib.import_module(self.img_script).Screen()
         print(self.Screen)
+        
+def screen_mode(self):
+    choice = [ "image mode " , "script mode" ]
+    word = ask_list(choice)
+    
+    if word == "0":
+        self.img_mode = "img"
+        
+    if word == "1":
+        self.img_mode = "script"

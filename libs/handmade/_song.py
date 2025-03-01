@@ -119,4 +119,9 @@ def convert_midi(self,soundmap = ""  , destination = "appdata/cache/midi_cache.w
     self.files.append( self.song )
     fs.midi_to_audio(song ,destination )
         
-        
+def default_midi(self):
+    choice = listdir( "appdata/midi_codec" )
+    word = ask_list(choice)
+    if all_numbers( word, len(choice) , 1):
+        self.base_soundmap = f"appdata/midi_codec/{ choice[ int( word ) ] }"
+    
