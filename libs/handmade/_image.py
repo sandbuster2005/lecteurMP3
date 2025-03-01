@@ -3,9 +3,16 @@ from os import listdir
 from os.path import isdir,isfile
 from random import randint
 from .utils import *
+import importlib
 
-    
 def init_image( self ):
+    self.img_mode = "script"
+    self.img_script = "appdata.scripts.test"
+    self.screen = None
+    self.path_to_img = "appdata/image/"# chemin du dosier image
+    self.imgs = []# liste des images contenu dans le chemin indiqué ,vide = random
+    self.img = ""# image actuel
+    self.show = 1# affiche ou non l'image selectionné
     
     if "64" in self.sys_architecture:
         self.img_command = "./libs/x86/jp2a_x86 --fill --color-depth=8"
@@ -13,10 +20,7 @@ def init_image( self ):
     elif "arm" in self.sys_architecture:
         self.img_command = "./libs/arm/jp2a_arm --fill --color-depth=8"
         
-    self.path_to_img = "appdata/image/"# chemin du dosier image
-    self.imgs = []# liste des images contenu dans le chemin indiqué ,vide = random
-    self.img = ""# image actuel
-    self.show = 1# affiche ou non l'image selectionné
+    
     
     
 def get_img( self, path, files = [], start = 0 ):
@@ -46,13 +50,16 @@ def display_img( self ):
     limite:
     les images doit étre dans le dossiers image du programme
     """
-    if self.img != "":# une image est selectionné
-        self.external_call( [ f"{ self.img_command } { self.img }" ], True )# image selectionné
-        print("")
-    if self.img == "" and self.imgs != []:# il y a au moins une image et aucune selcetionné
-        self.external_call( [ f"{ self.img_command } { self.imgs[ randint( 0, len( self.imgs ) - 1) ] }" ], True )# image aléatoire
-        print("")
-   
+    if self.img_mode == " mg":
+        if self.img != "":# une image est selectionné
+            self.external_call( [ f"{ self.img_command } { self.img }" ], True )# image selectionné
+            print("")
+            
+        if self.img == "" and self.imgs != []:# il y a au moins une image et aucune selcetionné
+            self.external_call( [ f"{ self.img_command } { self.imgs[ randint( 0, len( self.imgs ) - 1) ] }" ], True )# image aléatoire
+            print("")
+    if self.img_mode == "script":
+        self.Screen.display()
 def select_img( self ):
     """
     cette fonction permet de choisir une image parmit la galerie ou de choisir aléatoire
@@ -85,4 +92,9 @@ def select_img( self ):
                     word = ""
             
         self.display()
-           
+
+def load_script(self):
+    
+    if self.img_script != "":
+        self.Screen = importlib.import_module(self.img_script).Screen()
+        print(self.Screen)

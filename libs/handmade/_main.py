@@ -33,6 +33,7 @@ def main( self ):
     self.get_img( self.path_to_img,start = 1 )#scan all image in repertory
     self.check_adress()#see if current file adress exist
     self.load_songs()#try to load the song
+    self.load_script()
     
     while len( self.files ) == 0:# if folder is empty
         self.out( "no song in folder" )
@@ -68,7 +69,7 @@ def update( self ):
     timer_changed = False
     timer = None
     base_time=strftime( '%H %M' ).split( " " )
-    stopped = False
+    stop = 0
     
     while self.stay:
         time = self.player.get_time()#temps actuel
@@ -172,7 +173,17 @@ def update( self ):
                     out( f"{ self.volume }%" )
                     
                 load()
-                
+            
+            if stop != 0:
+                stop -= 1 
+            if self.img_script != None and stop == 0:
+                if int( monotonic() ) % self.Screen.framerate == 0:
+                    save()
+                    home()
+                    self.Screen.update()
+                    load()
+                    stop = 10
+                    
             if ceil( time/1000 ) >= self.bar.max : #la chanson est fini# la chason est bien fini et ne vien pas de commencer
                 
                 if not self.repeat:
