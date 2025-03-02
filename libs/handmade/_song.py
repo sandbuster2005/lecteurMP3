@@ -121,7 +121,7 @@ def convert_midi(self,soundmap = ""  , destination = "appdata/cache/midi_cache.w
         
 def default_midi(self):
     choice = listdir( "appdata/midi_codec" )
-    word = ask_list(choice)
+    word = self.ask_list(choice)
     if all_numbers( word, len(choice) , 1):
         self.base_soundmap = f"appdata/midi_codec/{ choice[ int( word ) ] }"
     

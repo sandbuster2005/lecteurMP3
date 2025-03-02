@@ -6,7 +6,7 @@ from .utils import *
 import importlib
 
 def init_image( self ):
-    self.img_mode = "script"
+    self.img_mode = "img"
     self.img_script = "appdata.scripts.test"
     self.screen = None
     self.path_to_img = "appdata/image/"# chemin du dosier image
@@ -103,7 +103,7 @@ def load_script(self):
         
 def screen_mode(self):
     choice = [ "image mode " , "script mode" ]
-    word = ask_list(choice)
+    word = self.ask_list(choice)
     
     if word == "0":
         self.img_mode = "img"
