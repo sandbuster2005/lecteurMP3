@@ -30,9 +30,9 @@ def init_command( self ):
             "j": "pour selectionner une image dans la galerie",
             "t": "pour selectionner le mode d'affichage",
             "u": "pour sauvegarder les parametre actuel",
-            "dl" :"pour rechercher sur youtube",
+            "dl": "pour rechercher sur youtube",
             "x": "pour télécharger une playlist youtube",
-            "v": " pour modifier une commande",
+            "v": "pour modifier une commande",
             "w": "pour remetre les paramètre a 0",
             "z": "pour supprimer/deplacer/renommer un fichier"
             }
