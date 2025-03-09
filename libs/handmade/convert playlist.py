@@ -2,7 +2,7 @@
 from utils import replace
 from os import listdir
 import os
-path="/home/sand/Music/Musique/musique/download"
+path="/home/sand/Musique/musique/download"
 for f in listdir(path):
     print(f)
     extension="."+f.rsplit(".",1)[1]

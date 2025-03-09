@@ -89,7 +89,7 @@ def b_f( self ):
 
 
 def dl_f( self ):
-    self.yt_search()
+    self.suspend("yt_search")
 
 
 def l_f( self ):
@@ -109,7 +109,7 @@ def w_f( self ):
 
 
 def x_f( self ):
-    self.dl_yt_playlist()
+    self.suspend("dl_yt_playlist")
     self.pause = True
 
 
